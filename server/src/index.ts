@@ -8,7 +8,7 @@ const server = http.createServer(app);
 const { Server } = require("socket.io");
 const io = new Server(server);
 
-const PORT = 5000;
+const PORT = 8000;
 
 // Connect with client
 io.on("connection", (socket: Socket) => {
