@@ -1,19 +1,21 @@
-import { useState } from "react";
-import { Button } from "./components/ui/button";
+import { RouterProvider, createBrowserRouter } from 'react-router-dom';
+import Home from './app/home/Home';
+import Auth from './app/auth/Page';
+
+const router = createBrowserRouter([
+  {
+    children: [
+      { path: '/', element: <Home /> },
+      {
+        path: '/auth',
+        element: <Auth />,
+      },
+    ],
+  },
+]);
 
 function App() {
-  const [count, setCount] = useState(0);
-
-  return (
-    <>
-      <h1 className=" text-3xl text-red-500">Hello</h1>
-      <div className="card">
-        <Button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </Button>
-      </div>
-    </>
-  );
+  return <RouterProvider router={router} />;
 }
 
 export default App;
