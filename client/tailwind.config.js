@@ -71,6 +71,15 @@ export default {
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out',
       },
+      theme: {
+        extend: {
+          flexGrow: {
+            1: 1,
+            3: 3,
+            8: 8,
+          },
+        },
+      },
     },
   },
   plugins: [import('tailwindcss-animate')],

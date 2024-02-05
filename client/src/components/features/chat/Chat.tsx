@@ -8,7 +8,7 @@ interface Message {
   message: string;
 }
 
-function Home() {
+const Chat = () => {
   const [message, setMessage] = useState('');
   const [list, setList] = useState<Message[]>([]);
   const handleSendMessage = () => {
@@ -22,26 +22,23 @@ function Home() {
     console.log(data);
     setList([...list, data]);
   });
-
   return (
-    <>
+    <div className="">
+      <h2>chat Home</h2>
       <div>
-        <h2>chat Home</h2>
-        <div>
-          <input
-            type="text"
-            placeholder="chat..."
-            onChange={(e) => setMessage(e.target.value)}
-            value={message}
-          />
-          <Button onClick={() => handleSendMessage()}>submit</Button>
-        </div>
-        {list.map((chat, i) => (
-          <div key={i}>{chat.message}</div>
-        ))}
+        <input
+          type="text"
+          placeholder="chat..."
+          onChange={(e) => setMessage(e.target.value)}
+          value={message}
+        />
+        <Button onClick={() => handleSendMessage()}>submit</Button>
       </div>
-    </>
+      {list.map((chat, i) => (
+        <div key={i}>{chat.message}</div>
+      ))}
+    </div>
   );
-}
+};
 
-export default Home;
+export default Chat;
