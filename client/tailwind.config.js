@@ -16,6 +16,7 @@ export default {
         '2xl': '1400px',
       },
     },
+
     extend: {
       colors: {
         border: 'hsl(var(--border))',
@@ -70,15 +71,6 @@ export default {
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out',
-      },
-      theme: {
-        extend: {
-          flexGrow: {
-            1: 1,
-            3: 3,
-            8: 8,
-          },
-        },
       },
     },
   },
