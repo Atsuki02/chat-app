@@ -3,8 +3,14 @@
 // import io, { Socket } from 'socket.io-client';
 import ChatHeader from './ChatHeader';
 import ChatBody from './ChatBody';
-import ChatInput from './ChatInput';
+import ChatMessageInput from './ChatMessageInput';
 
+import { AppDispatch, RootState } from '@/redux/store';
+import { useDispatch, useSelector } from 'react-redux';
+import { setSearchDrawerOpen, setSearchInput } from '@/redux/slices/chatSlice';
+import ChatSearchInput from './ChatSearchInput';
+import Cancel from '@/components/icons/Cancel';
+// import { setSettingsOpen } from '@/redux/slices/settingsSlice';
 // const socket: Socket = io('http://localhost:8000');
 
 // interface Message {
@@ -25,14 +31,36 @@ const Chat = () => {
   //   console.log(data);
   //   setList([...list, data]);
   // });
+
+  const dispatch: AppDispatch = useDispatch();
+  const handleCancelInput = () => {
+    dispatch(setSearchInput(''));
+    dispatch(setSearchDrawerOpen(false));
+  };
+
+  const { isSearchDrawerOpen } = useSelector((state: RootState) => state.chat);
   return (
-    <div className="sm:border-l-[1px]">
-      <ChatHeader />
-      <div className="h-[calc(100vh-112px)] bg-yellow-50 overflow-auto">
+    <div className="sm:border-l-[1px] h-screen flex flex-col justify-center justify-items-stretch">
+      {isSearchDrawerOpen ? (
+        <div className="h-14 w-full bg-white flex justify-between items-center">
+          <div className="w-full pr-2 cursor-pointer">
+            <ChatSearchInput />
+          </div>
+          <div
+            className="w-5 h-5 mr-4 cursor-pointer"
+            onClick={handleCancelInput}
+          >
+            <Cancel />
+          </div>
+        </div>
+      ) : (
+        <ChatHeader />
+      )}
+      <div className="flex-grow overflow-auto bg-yellow-50 ">
         <ChatBody />
       </div>
-      <div className="h-1/8">
-        <ChatInput />
+      <div>
+        <ChatMessageInput />
       </div>
       {/* <div>
         <input

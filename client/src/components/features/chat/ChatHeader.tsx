@@ -2,7 +2,10 @@ import ChevronDown from '@/components/icons/ChevronDown';
 import ChevronLeft from '@/components/icons/ChevronLeft';
 import SearchIcon from '@/components/icons/SearchIcon';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { setCurrentScreen } from '@/redux/slices/chatSlice';
+import {
+  setCurrentScreen,
+  setSearchDrawerOpen,
+} from '@/redux/slices/chatSlice';
 import { AppDispatch } from '@/redux/store';
 import { useDispatch } from 'react-redux';
 
@@ -13,8 +16,8 @@ const ChatHeader = () => {
     <div className="h-14 w-full bg-white flex justify-between items-center px-6  ">
       <div className="flex gap-3 items-center">
         <div
-          className="sm:hidden"
-          onClick={() => dispatch(setCurrentScreen('friendList'))}
+          className="sm:hidden h-6 w-6"
+          onClick={() => dispatch(setCurrentScreen('chatsList'))}
         >
           <ChevronLeft />
         </div>
@@ -31,7 +34,10 @@ const ChatHeader = () => {
         </div>
       </div>
       <div className="flex justify-between items-center gap-4 ">
-        <div className="cursor-pointer w-4 h-4">
+        <div
+          className="cursor-pointer w-4 h-4"
+          onClick={() => dispatch(setSearchDrawerOpen(true))}
+        >
           <SearchIcon />
         </div>
         <div className="border-l-[1px] pl-4 cursor-pointer w-8 h-8">

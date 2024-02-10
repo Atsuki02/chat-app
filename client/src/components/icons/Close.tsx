@@ -1,20 +1,20 @@
-const ChevronLeft = () => {
+const Close = ({ fill = 'none', stroke = 'currentColor' }) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      fill="none"
+      fill={fill}
       viewBox="0 0 24 24"
       strokeWidth={1.5}
-      stroke="currentColor"
+      stroke={stroke}
       className="w-full h-full"
     >
       <path
         strokeLinecap="round"
         strokeLinejoin="round"
-        d="M15.75 19.5 8.25 12l7.5-7.5"
+        d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
       />
     </svg>
   );
 };
 
-export default ChevronLeft;
+export default Close;
