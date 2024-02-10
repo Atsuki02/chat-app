@@ -1,0 +1,102 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                 String               @id @default(uuid())
+  username           String               @unique
+  email              String               @unique
+  passwordHash       String
+  messages           Message[]
+  isOnline           Boolean              @default(false)
+  lastOnlineAt       DateTime?
+  profileImageUrl    String?
+  darkMode           Boolean              @default(false)
+  notifications      Boolean              @default(true)
+  createdAt          DateTime             @default(now())
+  updatedAt          DateTime             @updatedAt
+  ChatRoom           ChatRoom?            @relation(fields: [chatRoomId], references: [id])
+  chatRoomId         String?
+  favorites          Favorite[]           @relation("UserFavorites")
+  favoritedBy        Favorite[]           @relation("FavoritedByUsers")
+  chatRoomMembership ChatRoomMembership[]
+  readReceipts       ReadReceipt[]
+  pinnedChatRooms    PinnedChatRoom[]
+  sessions           Session[]
+}
+
+model Session {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  expiresAt DateTime
+}
+
+model Favorite {
+  id             String   @id @default(uuid())
+  userId         String
+  favoriteUserId String
+  user           User     @relation(name: "UserFavorites", fields: [userId], references: [id])
+  favoriteUser   User     @relation(name: "FavoritedByUsers", fields: [favoriteUserId], references: [id])
+  createdAt      DateTime @default(now())
+
+  @@unique([userId, favoriteUserId])
+}
+
+model Message {
+  id           String        @id @default(uuid())
+  content      String
+  userId       String
+  user         User          @relation(fields: [userId], references: [id])
+  chatRoomId   String
+  chatRoom     ChatRoom      @relation(fields: [chatRoomId], references: [id])
+  createdAt    DateTime      @default(now())
+  readReceipts ReadReceipt[]
+}
+
+model ReadReceipt {
+  messageId String
+  userId    String
+  message   Message @relation(fields: [messageId], references: [id])
+  user      User    @relation(fields: [userId], references: [id])
+
+  @@id([messageId, userId])
+}
+
+model ChatRoomMembership {
+  chatRoomId String
+  chatRoom   ChatRoom @relation(fields: [chatRoomId], references: [id])
+  userId     String
+  user       User     @relation(fields: [userId], references: [id])
+
+  @@id([chatRoomId, userId])
+}
+
+model ChatRoom {
+  id                 String               @id @default(uuid())
+  name               String?
+  isDirectMessage    Boolean
+  users              User[]
+  messages           Message[]
+  chatRoomMembership ChatRoomMembership[]
+  pinnedByUsers      PinnedChatRoom[]
+}
+
+model PinnedChatRoom {
+  userId     String
+  chatRoomId String
+  user       User     @relation(fields: [userId], references: [id])
+  chatRoom   ChatRoom @relation(fields: [chatRoomId], references: [id])
+
+  @@unique([userId, chatRoomId])
+}
