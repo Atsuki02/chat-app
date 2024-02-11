@@ -1,7 +1,10 @@
 import { PrismaClient } from '@prisma/client';
 import { chatRoomMemberships, chatRooms, favorites, messages, pinnedChatRooms, readReceipts, sessions, users } from './data';
 
-const prisma = new PrismaClient();
+
+export const prisma = new PrismaClient();
+
+
 
 async function main() {
     await prisma.pinnedChatRoom.deleteMany({});

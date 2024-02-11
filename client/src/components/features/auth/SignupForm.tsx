@@ -1,3 +1,4 @@
+import { EnvelopeOpenIcon, ReloadIcon } from '@radix-ui/react-icons';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
@@ -11,6 +12,13 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui';
+import { useRegisterUserMutation } from '@/redux/services/authService';
+import { useNavigate } from 'react-router-dom';
+import { useToast } from '@/components/ui/use-toast';
+
+interface ErrorResponse {
+  error: string;
+}
 
 const singupSchema = z
   .object({
@@ -44,7 +52,34 @@ const SignupForm = () => {
     },
   });
 
-  const onSubmit = () => {};
+  const { toast } = useToast();
+
+  const navigate = useNavigate();
+
+  const [registerUser, { isLoading, isError, error }] =
+    useRegisterUserMutation();
+
+  const onSubmit = async (data: z.infer<typeof singupSchema>) => {
+    try {
+      const response = await registerUser(data).unwrap();
+      console.log('Registration successful:', response);
+      if (response.sessionId) {
+        localStorage.setItem('sessionId', response.sessionId);
+      }
+      toast({
+        duration: 2000,
+        title: 'Registration successful!',
+      });
+      navigate('/');
+    } catch (error) {
+      toast({
+        duration: 2000,
+        variant: 'destructive',
+        title: 'Registration failed!',
+      });
+      console.error('Registration failed:', error);
+    }
+  };
 
   return (
     <div className="flex justify-center items-center w-full p-6 text-sm border-2 border-gray-100 rounded-md">
@@ -109,8 +144,31 @@ const SignupForm = () => {
               </FormItem>
             )}
           />
-          <Button type="submit" className="w-full">
-            Sign up
+          {isError && error && (
+            <div className="text-red-500">
+              {'status' in error &&
+              typeof error.data === 'object' &&
+              (error.data as ErrorResponse).error
+                ? (error.data as ErrorResponse).error
+                : 'An error occurred during registration.'}
+            </div>
+          )}
+
+          <Button
+            type="submit"
+            className="w-full flex justify-center items-center"
+            disabled={isLoading}
+          >
+            {isLoading ? (
+              <>
+                <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
+                Please wait...
+              </>
+            ) : (
+              <>
+                <EnvelopeOpenIcon className="mr-2 h-4 w-4" /> Sign up with Email
+              </>
+            )}
           </Button>
         </form>
       </Form>

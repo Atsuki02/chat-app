@@ -23,8 +23,6 @@ model User {
   notifications      Boolean              @default(true)
   createdAt          DateTime             @default(now())
   updatedAt          DateTime             @updatedAt
-  ChatRoom           ChatRoom?            @relation(fields: [chatRoomId], references: [id])
-  chatRoomId         String?
   favorites          Favorite[]           @relation("UserFavorites")
   favoritedBy        Favorite[]           @relation("FavoritedByUsers")
   chatRoomMembership ChatRoomMembership[]
@@ -86,7 +84,6 @@ model ChatRoom {
   id                 String               @id @default(uuid())
   name               String?
   isDirectMessage    Boolean
-  users              User[]
   messages           Message[]
   chatRoomMembership ChatRoomMembership[]
   pinnedByUsers      PinnedChatRoom[]
