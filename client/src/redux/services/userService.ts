@@ -12,7 +12,7 @@ export const userApi = createApi({
       return headers;
     },
   }),
-  tagTypes: ['User'],
+  tagTypes: ['User', 'FavoriteUser'],
   endpoints: (builder) => ({
     getUser: builder.query({
       query: (userId) => `/${userId}`,
@@ -42,6 +42,45 @@ export const userApi = createApi({
       }),
       invalidatesTags: ({ userId }) => [{ type: 'User', id: userId }],
     }),
+    getAllUsers: builder.query({
+      query: () => `/users`,
+      providesTags: (result) =>
+        result
+          ? [
+              ...result.map(({ id }: { id: string }) => ({ type: 'User', id })),
+              'User',
+            ]
+          : ['User'],
+    }),
+    getFavoriteUsers: builder.query({
+      query: (userId) => `/${userId}/favorites`,
+      providesTags: (result) =>
+        result
+          ? [
+              ...result.map(({ id }: { id: string }) => ({
+                type: 'FavoriteUser',
+                id,
+              })),
+              { type: 'FavoriteUser', id: 'LIST' },
+            ]
+          : [{ type: 'FavoriteUser', id: 'LIST' }],
+    }),
+    addFavoriteUser: builder.mutation({
+      query: ({ userId, favoriteUserId }) => ({
+        url: `/${userId}/favorites/add`,
+        method: 'POST',
+        body: { favoriteUserId },
+      }),
+      invalidatesTags: [{ type: 'FavoriteUser', id: 'LIST' }],
+    }),
+    removeFavoriteUser: builder.mutation({
+      query: ({ userId, favoriteUserId }) => ({
+        url: `/${userId}/favorites/remove`,
+        method: 'DELETE',
+        body: { favoriteUserId },
+      }),
+      invalidatesTags: [{ type: 'FavoriteUser', id: 'LIST' }],
+    }),
   }),
 });
 
@@ -50,4 +89,8 @@ export const {
   useUpdateUserDarkModeMutation,
   useUpdateUserNotificationsMutation,
   useUpdateUserProfileImageMutation,
+  useGetAllUsersQuery,
+  useGetFavoriteUsersQuery,
+  useAddFavoriteUserMutation,
+  useRemoveFavoriteUserMutation,
 } = userApi;

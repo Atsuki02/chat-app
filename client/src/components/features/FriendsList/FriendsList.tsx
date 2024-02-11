@@ -3,42 +3,34 @@ import Pencil from '@/components/icons/Pencil';
 import SearchIcon from '@/components/icons/SearchIcon';
 import { Input } from '@/components/ui';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import {
+  useGetAllUsersQuery,
+  useGetFavoriteUsersQuery,
+} from '@/redux/services/userService';
 import { setSideBarDrawerOpen } from '@/redux/slices/chatSlice';
 import { setCreateDrawerOpen } from '@/redux/slices/createGroupSlice';
-import { setFriendProfileOpen } from '@/redux/slices/friendSlice';
-import { AppDispatch } from '@/redux/store';
-import { useDispatch } from 'react-redux';
-
-const friends = [
-  {
-    id: '1',
-    name: 'Alice',
-    status: 'Online',
-    message: 'How are youuuuuuuuuuuuuuuuu?',
-    image: 'path/to/alice.jpg',
-    createdAt: '10: 41 am',
-    selected: true,
-  },
-  {
-    id: '2',
-    name: 'Bob',
-    status: 'Online',
-    message: "I'm fine",
-    image: 'path/to/bob.jpg',
-    createdAt: 'Dec 17, 2023',
-  },
-  {
-    id: '3',
-    name: 'Bob',
-    status: 'Online',
-    message: "I'm fine",
-    image: 'path/to/bob.jpg',
-    createdAt: 'Dec 17, 2023',
-  },
-];
+import {
+  setFriendProfileOpen,
+  setSelectedFriendId,
+} from '@/redux/slices/friendSlice';
+import { AppDispatch, RootState } from '@/redux/store';
+import { Friend } from '@/types';
+import { useDispatch, useSelector } from 'react-redux';
 
 const FriendsList = () => {
   const dispatch: AppDispatch = useDispatch();
+
+  const { user } = useSelector((state: RootState) => state.auth);
+
+  const { data: friends } = useGetAllUsersQuery({});
+  const { data: favoriteFriends } = useGetFavoriteUsersQuery(user?.id, {
+    skip: !user?.id,
+  });
+
+  const handleClick = (friendId: string) => {
+    dispatch(setSelectedFriendId(friendId));
+    dispatch(setFriendProfileOpen(true));
+  };
 
   return (
     <div className="p-4 bg-white h-screen flex flex-col gap-2 overflow-auto ">
@@ -70,22 +62,26 @@ const FriendsList = () => {
 
       <span className="font-semibold pb-2 text-slate-800">Favorites</span>
       <ul className="list-none m-0 pb-2">
-        {friends.map((friend) => (
+        {favoriteFriends?.map((friend: Friend) => (
           <li
             key={friend.id}
             className={`flex items-center mb-1 last:mb-0 cursor-pointer p-2 rounded-xl`}
-            onClick={() => dispatch(setFriendProfileOpen(true))}
+            onClick={() => handleClick(friend.id)}
           >
             <div className="flex gap-3 items-center">
               <div className="relative">
                 <Avatar className="w-9 h-9 cursor-pointer">
-                  <AvatarImage src="https://github.com/shadcn.png" />
-                  <AvatarFallback>CN</AvatarFallback>
+                  <AvatarImage src={friend?.profileImageUrl} />
+                  <AvatarFallback>
+                    {friend?.username.substring(0, 2).toUpperCase()}
+                  </AvatarFallback>
                 </Avatar>
               </div>
               <div className="flex justify-between max-w-32">
                 <div className="flex-1 max-w-28">
-                  <p className="font-medium text-sm truncate">{friend.name}</p>
+                  <p className="font-medium text-sm truncate">
+                    {friend?.username}
+                  </p>
                 </div>
               </div>
             </div>
@@ -94,27 +90,33 @@ const FriendsList = () => {
       </ul>
       <span className="font-semibold pb-2 text-slate-800">All friends</span>
       <ul className="list-none m-0 pb-2">
-        {friends.map((friend) => (
-          <li
-            key={friend.id}
-            className={`flex items-center mb-1 last:mb-0 cursor-pointer p-2 rounded-xl`}
-            onClick={() => dispatch(setFriendProfileOpen(true))}
-          >
-            <div className="flex gap-3 items-center">
-              <div className="relative">
-                <Avatar className="w-9 h-9 cursor-pointer">
-                  <AvatarImage src="https://github.com/shadcn.png" />
-                  <AvatarFallback>CN</AvatarFallback>
-                </Avatar>
-              </div>
-              <div className="flex justify-between max-w-32">
-                <div className="flex-1 max-w-28">
-                  <p className="font-medium text-sm truncate">{friend.name}</p>
+        {friends
+          ?.filter((friend: { id: string }) => friend.id !== user?.id)
+          .map((friend: Friend) => (
+            <li
+              key={friend.id}
+              className={`flex items-center mb-1 last:mb-0 cursor-pointer p-2 rounded-xl`}
+              onClick={() => handleClick(friend.id)}
+            >
+              <div className="flex gap-3 items-center">
+                <div className="relative">
+                  <Avatar className="w-9 h-9 cursor-pointer">
+                    <AvatarImage src={friend?.profileImageUrl} />
+                    <AvatarFallback>
+                      {friend?.username.substring(0, 2).toUpperCase()}
+                    </AvatarFallback>
+                  </Avatar>
+                </div>
+                <div className="flex justify-between max-w-32">
+                  <div className="flex-1 max-w-28">
+                    <p className="font-medium text-sm truncate">
+                      {friend?.username}
+                    </p>
+                  </div>
                 </div>
               </div>
-            </div>
-          </li>
-        ))}
+            </li>
+          ))}
       </ul>
     </div>
   );
