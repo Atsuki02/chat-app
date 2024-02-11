@@ -1,4 +1,3 @@
-// src/services/authService.js
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 export const authApi = createApi({
@@ -34,6 +33,18 @@ export const authApi = createApi({
         method: 'GET',
       }),
     }),
+    deleteUser: builder.mutation({
+      query: (userId) => ({
+        url: `delete/${userId}`,
+        method: 'DELETE',
+      }),
+    }),
+    logoutUser: builder.mutation({
+      query: () => ({
+        url: 'logout',
+        method: 'POST',
+      }),
+    }),
   }),
 });
 
@@ -41,4 +52,6 @@ export const {
   useRegisterUserMutation,
   useLoginUserMutation,
   useValidateSessionQuery,
+  useDeleteUserMutation,
+  useLogoutUserMutation,
 } = authApi;

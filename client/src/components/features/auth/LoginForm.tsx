@@ -15,7 +15,9 @@ import { useLoginUserMutation } from '@/redux/services/authService';
 import { EnvelopeOpenIcon, ReloadIcon } from '@radix-ui/react-icons';
 import { useNavigate } from 'react-router-dom';
 import { useToast } from '@/components/ui/use-toast';
-
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from '@/redux/store';
+import { setUser } from '@/redux/slices/authSlice';
 interface ErrorResponse {
   error: string;
 }
@@ -35,12 +37,14 @@ const LoginForm = () => {
   });
   const { toast } = useToast();
   const navigate = useNavigate();
-
+  const dispatch: AppDispatch = useDispatch();
   const [loginUser, { isLoading, isError, error }] = useLoginUserMutation();
 
   const onSubmit = async (data: z.infer<typeof loginSchema>) => {
     try {
       const response = await loginUser(data).unwrap();
+      console.log(response);
+      dispatch(setUser(response.user));
       console.log('Registration successful:', response);
       if (response.sessionId) {
         localStorage.setItem('sessionId', response.sessionId);

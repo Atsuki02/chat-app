@@ -36,4 +36,26 @@ async function findUserById(userId: string) {
     return prisma.user.findUnique({ where: { id: userId } });
 }
 
-module.exports = {createUser, findUserByEmail, createSession, findSessionById, findUserById}
+async function deleteUserById(userId: string) {
+    await prisma.session.deleteMany({
+        where: {
+            userId: userId,
+        },
+    });
+    return prisma.user.delete({
+        where: {
+            id: userId,
+        },
+    });
+}
+
+async function deleteSessionById(sessionId: string) {
+    return prisma.session.delete({
+        where: {
+            id: sessionId,
+        },
+    });
+}
+
+
+module.exports = {createUser, findUserByEmail, createSession, findSessionById, findUserById, deleteUserById, deleteSessionById}

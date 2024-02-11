@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-
+import { resetState } from './reducer';
 export interface friendState {
   isFriendProfileOpen: boolean;
 }
@@ -15,6 +15,9 @@ const friendSlice = createSlice({
     setFriendProfileOpen: (state, action) => {
       state.isFriendProfileOpen = action.payload;
     },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(resetState, () => initialState);
   },
 });
 

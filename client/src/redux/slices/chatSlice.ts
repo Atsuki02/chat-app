@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-
+import { resetState } from './reducer';
 export interface chatState {
   isSideBarDrawerOpen: boolean;
   currentScreen: string;
@@ -35,6 +35,9 @@ const chatSlice = createSlice({
     setCurrentList: (state, action) => {
       state.currentList = action.payload;
     },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(resetState, () => initialState);
   },
 });
 

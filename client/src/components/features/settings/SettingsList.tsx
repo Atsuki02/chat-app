@@ -4,12 +4,20 @@ import Moon from '@/components/icons/Moon';
 import ChevronRight from '@/components/icons/ChevronRight';
 import Notifications from '@/components/icons/Notifications';
 import {
+  setAlertDeleteDialogOpen,
   setCurrentSettingScreen,
   setSettingsOpen,
 } from '@/redux/slices/settingsSlice';
-import { AppDispatch } from '@/redux/store';
-import { useDispatch } from 'react-redux';
+import { AppDispatch, RootState } from '@/redux/store';
+import { useDispatch, useSelector } from 'react-redux';
 import { useState } from 'react';
+import Logout from '@/components/icons/Logout';
+import Warn from '@/components/icons/Warn';
+import AlertDeleteDialog from './AlertDeleteDialog';
+import { useToast } from '@/components/ui/use-toast';
+import { useNavigate } from 'react-router-dom';
+import { useLogoutUserMutation } from '@/redux/services/authService';
+import { resetState } from '@/redux/slices/reducer';
 
 const SettingsList = () => {
   const dispatch: AppDispatch = useDispatch();
@@ -20,6 +28,12 @@ const SettingsList = () => {
     event.stopPropagation();
     dispatch(setSettingsOpen(false));
   };
+
+  const { isAlertDeleteDialogOpen } = useSelector(
+    (state: RootState) => state.settings,
+  );
+
+  const [logoutUser] = useLogoutUserMutation({});
 
   const handleAvatarChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -33,6 +47,38 @@ const SettingsList = () => {
 
   const handleChangeCurrentScreen = () => {
     dispatch(setCurrentSettingScreen('settingSelection'));
+  };
+
+  const handleOpenAlertDialog = (
+    event: React.MouseEvent<HTMLSpanElement, MouseEvent>,
+  ) => {
+    event.stopPropagation();
+    dispatch(setAlertDeleteDialogOpen(true));
+  };
+
+  const { toast } = useToast();
+  const navigate = useNavigate();
+
+  const handleLogout = async (
+    event: React.MouseEvent<HTMLSpanElement, MouseEvent>,
+  ) => {
+    event.stopPropagation();
+    try {
+      await logoutUser({}).unwrap();
+      toast({
+        duration: 2000,
+        title: 'Successfully logged out.',
+      });
+      dispatch(resetState());
+      navigate('/auth');
+    } catch (err) {
+      toast({
+        duration: 2000,
+        variant: 'destructive',
+        title: 'Failed to log out.',
+      });
+      console.error('Failed to log out.:', err);
+    }
   };
 
   return (
@@ -103,7 +149,30 @@ const SettingsList = () => {
             </div>
           </div>
         </div>
+        <div
+          className="flex justify-between items-center w-full text-sm sm:py-2 py-3 cursor-pointer"
+          onClick={handleLogout}
+        >
+          <div className="flex items-center gap-2">
+            <div className="h-5 w-5 p-1 flex items-center justify-center rounded-full bg-blue-300 text-white">
+              <Logout />
+            </div>
+            <span className="text-xs">Log out</span>
+          </div>
+        </div>
+        <div
+          className="flex justify-between items-center w-full text-sm sm:py-2 py-3 cursor-pointer"
+          onClick={handleOpenAlertDialog}
+        >
+          <div className="flex items-center gap-2">
+            <div className="h-5 w-5 p-1 flex items-center justify-center rounded-full bg-red-500 text-white">
+              <Warn />
+            </div>
+            <span className="text-xs text-red-700">Delete account</span>
+          </div>
+        </div>
       </div>
+      {isAlertDeleteDialogOpen && <AlertDeleteDialog />}
     </div>
   );
 };

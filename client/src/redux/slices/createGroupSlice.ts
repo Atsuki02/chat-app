@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-
+import { resetState } from './reducer';
 export interface createGroupState {
   isCreateDrawerOpen: boolean;
   selectedMembers: string[];
@@ -38,6 +38,9 @@ const createGroupSlice = createSlice({
     setGroupNameInput: (state, action) => {
       state.groupNameInput = action.payload;
     },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(resetState, () => initialState);
   },
 });
 
