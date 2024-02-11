@@ -5,6 +5,8 @@ import createGroupSlice from './slices/createGroupSlice';
 import friendSlice from './slices/friendSlice';
 import authSlice from './slices/authSlice';
 import { authApi } from './services/authService';
+import { userApi } from './services/userService';
+import { cloudinaryApi } from './services/cloudinaryService';
 
 const store = configureStore({
   reducer: {
@@ -14,9 +16,15 @@ const store = configureStore({
     friend: friendSlice,
     auth: authSlice,
     [authApi.reducerPath]: authApi.reducer,
+    [userApi.reducerPath]: userApi.reducer,
+    [cloudinaryApi.reducerPath]: cloudinaryApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(authApi.middleware),
+    getDefaultMiddleware().concat(
+      authApi.middleware,
+      userApi.middleware,
+      cloudinaryApi.middleware,
+    ),
 });
 
 export type AppDispatch = typeof store.dispatch;

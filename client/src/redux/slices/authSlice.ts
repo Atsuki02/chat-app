@@ -1,5 +1,5 @@
-import { createSlice } from '@reduxjs/toolkit';
 import { resetState } from './reducer';
+import { createSlice } from '@reduxjs/toolkit';
 
 interface User {
   email: string;

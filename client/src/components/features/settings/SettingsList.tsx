@@ -10,7 +10,6 @@ import {
 } from '@/redux/slices/settingsSlice';
 import { AppDispatch, RootState } from '@/redux/store';
 import { useDispatch, useSelector } from 'react-redux';
-import { useState } from 'react';
 import Logout from '@/components/icons/Logout';
 import Warn from '@/components/icons/Warn';
 import AlertDeleteDialog from './AlertDeleteDialog';
@@ -18,10 +17,14 @@ import { useToast } from '@/components/ui/use-toast';
 import { useNavigate } from 'react-router-dom';
 import { useLogoutUserMutation } from '@/redux/services/authService';
 import { resetState } from '@/redux/slices/reducer';
+import {
+  useGetUserQuery,
+  useUpdateUserProfileImageMutation,
+} from '@/redux/services/userService';
+import { useUploadImageMutation } from '@/redux/services/cloudinaryService';
 
 const SettingsList = () => {
   const dispatch: AppDispatch = useDispatch();
-  const [avatarUrl, setAvatarUrl] = useState('https://github.com/shadcn.png');
   const handleCancel = (
     event: React.MouseEvent<HTMLSpanElement, MouseEvent>,
   ) => {
@@ -33,20 +36,46 @@ const SettingsList = () => {
     (state: RootState) => state.settings,
   );
 
-  const [logoutUser] = useLogoutUserMutation({});
+  const { user } = useSelector((state: RootState) => state.auth);
 
-  const handleAvatarChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const { data } = useGetUserQuery(user?.id, {
+    skip: !user?.id,
+  });
+
+  const [logoutUser] = useLogoutUserMutation({});
+  const [uploadImage] = useUploadImageMutation();
+  const [updateUserProfileImage] = useUpdateUserProfileImageMutation();
+
+  const handleAvatarChange = async (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
     const file = event.target.files?.[0];
     if (!file) {
       return;
     }
 
-    const newAvatarUrl = URL.createObjectURL(file);
-    setAvatarUrl(newAvatarUrl);
+    const form = new FormData();
+    form.append('file', file);
+    form.append(
+      'upload_preset',
+      import.meta.env.VITE_CLOUDINARY_PRESET_NAME as string,
+    );
+
+    try {
+      const response = await uploadImage(form).unwrap();
+      const result = await updateUserProfileImage({
+        userId: data?.id,
+        imageUrl: response.secure_url,
+      }).unwrap();
+
+      console.log(result);
+    } catch (error) {
+      console.error('Upload failed:', error);
+    }
   };
 
-  const handleChangeCurrentScreen = () => {
-    dispatch(setCurrentSettingScreen('settingSelection'));
+  const handleChangeCurrentScreen = (type: string) => {
+    dispatch(setCurrentSettingScreen(type));
   };
 
   const handleOpenAlertDialog = (
@@ -94,8 +123,10 @@ const SettingsList = () => {
       </div>
       <div className="relative mt-2">
         <Avatar className="w-11 h-11">
-          <AvatarImage src={avatarUrl} />
-          <AvatarFallback>CN</AvatarFallback>
+          <AvatarImage src={data?.profileImageUrl} />
+          <AvatarFallback className="bg-yellow-200">
+            {data?.username.substring(0, 2).toUpperCase()}
+          </AvatarFallback>
         </Avatar>
         <input
           type="file"
@@ -111,11 +142,11 @@ const SettingsList = () => {
           <PlusCircle />
         </label>
       </div>
-      <p className="text-sm font-semibold mt-2">Atsuki Kitada</p>
+      <p className="text-sm font-semibold mt-2">{data.username}</p>
       <div className="flex flex-col w-full px-2 mt-6 bg-white rounded-lg divide-y divide-gray-100">
         <div
           className="flex justify-between items-center w-full  text-sm sm:py-2 py-3 cursor-pointer "
-          onClick={handleChangeCurrentScreen}
+          onClick={() => handleChangeCurrentScreen('darkModeSelection')}
         >
           <div className="flex items-center gap-2">
             <div className="h-5 w-5 p-1 flex items-center justify-center rounded-full bg-black">
@@ -125,7 +156,9 @@ const SettingsList = () => {
           </div>
 
           <div className="flex items-center gap-2">
-            <span className="text-xs text-gray-600">Off</span>
+            <span className="text-xs text-gray-600">
+              {data?.darkMode ? 'On' : 'Off'}
+            </span>
             <div className="h-3 w-3 text-gray-600">
               <ChevronRight />
             </div>
@@ -133,7 +166,7 @@ const SettingsList = () => {
         </div>
         <div
           className="flex justify-between items-center w-full text-sm sm:py-2 py-3 cursor-pointer"
-          onClick={handleChangeCurrentScreen}
+          onClick={() => handleChangeCurrentScreen('notificationsSelection')}
         >
           <div className="flex items-center gap-2">
             <div className="h-5 w-5 p-1 flex items-center justify-center rounded-full bg-yellow-400">
@@ -143,7 +176,9 @@ const SettingsList = () => {
           </div>
 
           <div className="flex items-center gap-2">
-            <span className="text-xs text-gray-600">Off</span>
+            <span className="text-xs text-gray-600">
+              {data?.notifications ? 'On' : 'Off'}
+            </span>
             <div className="h-3 w-3 text-gray-600">
               <ChevronRight />
             </div>

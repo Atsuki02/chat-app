@@ -20,6 +20,19 @@ const Settings = () => {
     dispatch(setSettingsOpen(isSettingsOpen));
   };
 
+  const renderContent = () => {
+    switch (currentSettingScreen) {
+      case 'settingsList':
+        return <SettingsList />;
+      case 'darkModeSelection':
+        return <SettingSelection type="darkModeSelection" />;
+      case 'notificationsSelection':
+        return <SettingSelection type="notificationsSelection" />;
+      default:
+        return null;
+    }
+  };
+
   return (
     <Drawer
       modal={true}
@@ -30,14 +43,10 @@ const Settings = () => {
       }
     >
       <DrawerContent
-        className="flex bg-gray-100 font-main inset-x-0 top-auto sm:inset-0 m-auto w-full h-[500px] sm:min-w-96 sm:w-[300px] sm:h-[350px] rounded-tl-lg  rounded-tr-lg sm:rounded-lg after:hidden"
+        className="flex bg-gray-100 font-main inset-x-0 top-auto sm:inset-0 m-auto w-full h-[500px] sm:min-w-96 sm:w-[300px] sm:h-[350px] rounded-tl-lg rounded-tr-lg sm:rounded-lg after:hidden"
         onClick={handleOpenChange}
       >
-        {currentSettingScreen === 'settingsList' ? (
-          <SettingsList />
-        ) : (
-          <SettingSelection />
-        )}
+        {renderContent()}
       </DrawerContent>
     </Drawer>
   );

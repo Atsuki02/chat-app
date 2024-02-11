@@ -1,14 +1,45 @@
-import Check from '@/components/icons/Check';
 import ChevronLeft from '@/components/icons/ChevronLeft';
+import {
+  useGetUserQuery,
+  useUpdateUserDarkModeMutation,
+  useUpdateUserNotificationsMutation,
+} from '@/redux/services/userService';
 import {
   setCurrentSettingScreen,
   setSettingsOpen,
 } from '@/redux/slices/settingsSlice';
-import { AppDispatch } from '@/redux/store';
-import { useDispatch } from 'react-redux';
+import { AppDispatch, RootState } from '@/redux/store';
+import { useDispatch, useSelector } from 'react-redux';
+import SelectionOption from './SelectionOption';
 
-const SettingSelection = () => {
+const SettingSelection = ({ type }: { type: string }) => {
   const dispatch: AppDispatch = useDispatch();
+
+  const { user } = useSelector((state: RootState) => state.auth);
+
+  const { data } = useGetUserQuery(user?.id, {
+    skip: !user?.id,
+  });
+
+  const [updateUserDarkMode] = useUpdateUserDarkModeMutation();
+  const [updateUserNotifications] = useUpdateUserNotificationsMutation();
+
+  const handleToggleToOff = async (type: string) => {
+    if (type === 'darkModeSelection') {
+      await updateUserDarkMode({ userId: data?.id, darkMode: false });
+    } else if (type === 'notificationsSelection') {
+      await updateUserNotifications({ userId: data?.id, notifications: false });
+    }
+  };
+
+  const handleToggleToOn = async (type: string) => {
+    if (type === 'darkModeSelection') {
+      await updateUserDarkMode({ userId: data?.id, darkMode: true });
+    } else if (type === 'notificationsSelection') {
+      await updateUserNotifications({ userId: data?.id, notifications: true });
+    }
+  };
+
   const handleCancel = (
     event: React.MouseEvent<HTMLSpanElement, MouseEvent>,
   ) => {
@@ -39,30 +70,30 @@ const SettingSelection = () => {
         Done
       </span>
       <div className="flex flex-col">
-        <p className="font-semibold text-sm">Dark mode</p>
+        <p className="font-semibold text-sm">
+          {type === 'darkModeSelection' ? 'Dark mode' : 'Notifications'}
+        </p>
       </div>
 
       <div className="flex flex-col w-full px-3 mt-6 bg-white rounded-lg divide-y divide-gray-100">
-        <div className="flex justify-between items-center w-full text-sm sm:py-2 py-3 ">
-          <div className="flex items-center gap-2">
-            <span className="text-xs">On</span>
-          </div>
-          <div className="flex items-center">
-            <div className="h-4 w-4 font text-yellow-400">
-              <Check />
-            </div>
-          </div>
-        </div>
-        <div className="flex justify-between items-center w-full text-sm sm:py-2 py-3 ">
-          <div className="flex items-center gap-2">
-            <span className="text-xs">Off</span>
-          </div>
-          <div className="flex items-center">
-            <div className="h-4 w-4 font text-yellow-400">
-              {/* <Check /> */}
-            </div>
-          </div>
-        </div>
+        <SelectionOption
+          onClick={() => handleToggleToOff(type)}
+          label="Off"
+          isChecked={
+            type === 'darkModeSelection'
+              ? data?.darkMode === false
+              : data?.notifications === false
+          }
+        />
+        <SelectionOption
+          onClick={() => handleToggleToOn(type)}
+          label="On"
+          isChecked={
+            type === 'darkModeSelection'
+              ? data?.darkMode === true
+              : data?.notifications === true
+          }
+        />
       </div>
     </div>
   );
