@@ -12,7 +12,7 @@ export const userApi = createApi({
       return headers;
     },
   }),
-  tagTypes: ['User', 'FavoriteUser'],
+  tagTypes: ['User', 'FavoriteUser', 'ChatRoom'],
   endpoints: (builder) => ({
     getUser: builder.query({
       query: (userId) => `/${userId}`,
@@ -81,6 +81,52 @@ export const userApi = createApi({
       }),
       invalidatesTags: [{ type: 'FavoriteUser', id: 'LIST' }],
     }),
+    getUserChatRooms: builder.query({
+      query: (userId) => `/${userId}/chatRooms`,
+      providesTags: (result) =>
+        result
+          ? [
+              ...result.map(({ id }: { id: string }) => ({
+                type: 'ChatRoom',
+                id,
+              })),
+              { type: 'ChatRoom', id: 'LIST' },
+            ]
+          : [{ type: 'ChatRoom', id: 'LIST' }],
+    }),
+    getPinnedChatRoomsByUser: builder.query({
+      query: (userId) => `user/${userId}/pinned`,
+      providesTags: (result) =>
+        result
+          ? [
+              ...result.map(({ id }: { id: string }) => ({
+                type: 'ChatRoom',
+                id,
+              })),
+              { type: 'ChatRoom', id: 'LIST' },
+            ]
+          : [{ type: 'ChatRoom', id: 'LIST' }],
+    }),
+    getChatRoomByIdAndUserId: builder.query({
+      query: ({ userId, chatRoomId }) => `/${userId}/chatRooms/${chatRoomId}`,
+      providesTags: ({ chatRoomId }) => [{ type: 'ChatRoom', id: chatRoomId }],
+    }),
+    createDirectMessageChatRoom: builder.mutation({
+      query: ({ userId1, userId2 }) => ({
+        url: '/direct',
+        method: 'POST',
+        body: { userId1, userId2 },
+      }),
+      invalidatesTags: [{ type: 'ChatRoom', id: 'LIST' }],
+    }),
+    createChatRoomWithMembers: builder.mutation({
+      query: ({ name, members, chatRoomImageUrl }) => ({
+        url: '/create-group',
+        method: 'POST',
+        body: { name, members, chatRoomImageUrl },
+      }),
+      invalidatesTags: ['ChatRoom'],
+    }),
   }),
 });
 
@@ -93,4 +139,9 @@ export const {
   useGetFavoriteUsersQuery,
   useAddFavoriteUserMutation,
   useRemoveFavoriteUserMutation,
+  useGetUserChatRoomsQuery,
+  useGetPinnedChatRoomsByUserQuery,
+  useGetChatRoomByIdAndUserIdQuery,
+  useCreateDirectMessageChatRoomMutation,
+  useCreateChatRoomWithMembersMutation,
 } = userApi;

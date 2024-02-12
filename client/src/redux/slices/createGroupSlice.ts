@@ -5,6 +5,8 @@ export interface createGroupState {
   selectedMembers: string[];
   currentScreen: string;
   groupNameInput: string;
+  error: string;
+  groupImageUrl: string;
 }
 
 const initialState: createGroupState = {
@@ -12,6 +14,8 @@ const initialState: createGroupState = {
   selectedMembers: [],
   currentScreen: 'selectMembers',
   groupNameInput: '',
+  error: '',
+  groupImageUrl: 'https://github.com/shadcn.png',
 };
 
 const createGroupSlice = createSlice({
@@ -38,6 +42,15 @@ const createGroupSlice = createSlice({
     setGroupNameInput: (state, action) => {
       state.groupNameInput = action.payload;
     },
+    setError: (state, action) => {
+      state.error = action.payload;
+    },
+    setGroupImageUrl: (state, action) => {
+      state.groupImageUrl = action.payload;
+    },
+    resetCreateGroupState() {
+      return initialState;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(resetState, () => initialState);
@@ -51,6 +64,9 @@ export const {
   setSelectedMember,
   setCurrentScreen,
   setGroupNameInput,
+  setError,
+  setGroupImageUrl,
+  resetCreateGroupState,
 } = createGroupSlice.actions;
 
 export default createGroupSlice.reducer;

@@ -6,12 +6,18 @@ import { useDispatch, useSelector } from 'react-redux';
 import SetUpGroupProfile from './SetUpGroupProfile';
 import { setCreateDrawerOpen } from '@/redux/slices/createGroupSlice';
 import CreateGroup from './CreateGroup';
+import { useGetAllUsersQuery } from '@/redux/services/userService';
+import Loading from '@/components/ui/Loading';
 
 const Create = () => {
   const dispatch: AppDispatch = useDispatch();
 
   const { isCreateDrawerOpen, currentScreen } = useSelector(
     (state: RootState) => state.createGroup,
+  );
+
+  const { data: friends, isLoading: isFetchingFriends } = useGetAllUsersQuery(
+    {},
   );
 
   const handleOpenChange = (
@@ -36,9 +42,13 @@ const Create = () => {
         className="flex   bg-white font-main inset-x-0 top-auto sm:inset-0 m-auto w-full h-[600px] sm:min-w-96 sm:w-[300px] sm:h-[350px] rounded-tl-lg  rounded-tr-lg sm:rounded-lg after:hidden"
       >
         {currentScreen === 'selectMembers' ? (
-          <CreateGroup />
+          isFetchingFriends ? (
+            <Loading />
+          ) : (
+            <CreateGroup friends={friends} />
+          )
         ) : (
-          <SetUpGroupProfile />
+          <SetUpGroupProfile friends={friends} />
         )}
       </DrawerContent>
     </Drawer>

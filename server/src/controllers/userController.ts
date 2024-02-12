@@ -1,7 +1,8 @@
 
+
 import { User } from '@prisma/client';
 import { Request, Response } from 'express';
-const { findUserById, toggleDarkMode, toggleNotifications, updateUserProfileImage, findAllUsers, findFavoriteUsers, addFavorite, removeFavorite } = require('../models/userModel')
+const { findUserById, toggleDarkMode, toggleNotifications, updateUserProfileImage, findAllUsers, findFavoriteUsers, addFavorite, removeFavorite, findUserChatRooms, findPinnedChatRoomsByUser, findChatRoomByIdAndUserId, createDirectMessageChatRoom, createChatRoomWithMembers } = require('../models/userModel')
 
 exports.getUser = async (req: Request, res: Response) => {
     const userId = req.params.userId;
@@ -103,3 +104,86 @@ exports.removeFavorite = async (req: Request, res: Response) => {
       res.status(500).json({ error: "Failed to add favorite user." });
     }
 };
+
+exports.getUserChatRooms = async (req: Request, res: Response) => {
+    const userId = req.params.userId; 
+    try {
+        const memberships = await findUserChatRooms(userId);
+        const chatRooms = memberships.map((membership: any) => {
+            const isPinned = membership.chatRoom.pinnedByUsers.some((pinned: any) => pinned.userId === userId);
+            let partnerUserInfo = null;
+           
+            if (membership.chatRoom.isDirectMessage) {
+                const partnerMembership = membership.chatRoom.chatRoomMembership.find((m: any) => m.userId !== userId);
+                partnerUserInfo = partnerMembership ? partnerMembership.user : null;
+            }
+            return {
+                ...membership.chatRoom,
+                isPinned,
+                partnerUserInfo,
+            };
+        });
+        res.json(chatRooms);
+    } catch (error) {
+        console.error("Error fetching user's chat rooms:", error);
+        res.status(500).json({ error: "Failed to fetch user's chat rooms." });
+    }
+};
+exports.getPinnedChatRoomsByUser = async (req: Request, res: Response) => {
+    const { userId } = req.params;
+    try {
+      const pinnedChatRooms = await findPinnedChatRoomsByUser(userId);
+      res.json(pinnedChatRooms);
+    } catch (error) {
+      console.error("Error fetching pinned chat rooms:", error);
+      res.status(500).json({ error: "Failed to fetch pinned chat rooms." });
+    }
+};
+
+exports.getChatRoomByIdAndUserId = async (req: Request, res: Response) => {
+    const { userId, chatRoomId } = req.params; 
+
+    console.log(userId, chatRoomId)
+    try {
+        const chatRoom = await findChatRoomByIdAndUserId(userId, chatRoomId);
+
+        if (!chatRoom) {
+            return res.status(404).json({ message: 'Chat room not found' });
+        }
+
+        res.json(chatRoom);
+    } catch (error) {
+        console.error('Failed to fetch chat room:', error);
+        res.status(500).json({ message: 'Failed to fetch chat room' });
+    }
+};
+
+exports.createDirectMessageChatRoom = async (req: Request, res: Response)  => {
+    const { userId1, userId2 } = req.body;
+  
+    try {
+      const room = await createDirectMessageChatRoom(userId1, userId2);
+      res.json(room);
+    } catch (error) {
+      console.error('Error creating direct message chat room:', error);
+      res.status(500).json({ error: 'Failed to create direct message chat room.' });
+    }
+}
+
+
+exports.createChatRoomWithMembers = async (req: Request, res: Response) => {
+  const { name, members, chatRoomImageUrl } = req.body;
+
+  if (!name || members.length === 0) {
+    return res.status(400).json({ error: 'Name and members are required' });
+  }
+
+  try {
+    const room = await createChatRoomWithMembers(name, members, chatRoomImageUrl);
+    res.json(room);
+  } catch (error) {
+    console.error('Error creating chat room with members:', error);
+    res.status(500).json({ error: 'Failed to create chat room with members.' });
+  }
+};
+

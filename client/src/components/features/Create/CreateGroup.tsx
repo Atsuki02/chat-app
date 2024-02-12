@@ -12,97 +12,10 @@ import {
   setSelectedMember,
 } from '@/redux/slices/createGroupSlice';
 import { RootState } from '@/redux/store';
+import { Friend } from '@/types';
 import { useDispatch, useSelector } from 'react-redux';
 
-export const friends = [
-  {
-    id: '1',
-    name: 'Alice',
-    status: 'Online',
-    image: 'path/to/alice.jpg',
-    selected: true,
-  },
-  {
-    id: '2',
-    name: 'Bob',
-    status: 'Online',
-    image: 'path/to/bob.jpg',
-  },
-  {
-    id: '3',
-    name: 'Bob',
-    status: 'Online',
-    image: 'path/to/bob.jpg',
-  },
-  {
-    id: '4',
-    name: 'Bob',
-    status: 'Online',
-    image: 'path/to/bob.jpg',
-  },
-  {
-    id: '5',
-    name: 'Bob',
-    status: 'Online',
-    image: 'path/to/bob.jpg',
-  },
-  {
-    id: '6',
-    name: 'Bob',
-    status: 'Online',
-    image: 'path/to/bob.jpg',
-  },
-  {
-    id: '7',
-    name: 'Bob',
-    status: 'Online',
-    image: 'path/to/bob.jpg',
-  },
-  {
-    id: '8',
-    name: 'Bob',
-    status: 'Online',
-    image: 'path/to/bob.jpg',
-  },
-  {
-    id: '9',
-    name: 'Bob',
-    status: 'Online',
-    image: 'path/to/bob.jpg',
-  },
-  {
-    id: '10',
-    name: 'Bob',
-    status: 'Online',
-    image: 'path/to/bob.jpg',
-  },
-  {
-    id: '11',
-    name: 'Bob',
-    status: 'Online',
-    image: 'path/to/bob.jpg',
-  },
-  {
-    id: '12',
-    name: 'Bob',
-    status: 'Online',
-    image: 'path/to/bob.jpg',
-  },
-  {
-    id: '13',
-    name: 'Bob',
-    status: 'Online',
-    image: 'path/to/bob.jpg',
-  },
-  {
-    id: '14',
-    name: 'Bob',
-    status: 'Online',
-    image: 'path/to/bob.jpg',
-  },
-];
-
-const CreateGroup = () => {
+const CreateGroup = ({ friends }: { friends: Friend[] }) => {
   const dispatch = useDispatch();
 
   const { selectedMembers } = useSelector(
@@ -183,7 +96,7 @@ const CreateGroup = () => {
                   </div>
                 </div>
                 <p className=" font-extralight text-slate-600 text-xxs max-w-5 truncate">
-                  {friend.name}
+                  {friend?.username}
                 </p>
               </div>
             </li>
@@ -211,12 +124,14 @@ const CreateGroup = () => {
               <div className="sm:mr-3 mr-4">
                 <Avatar className="sm:w-6 sm:h-6 w-10 h-10 cursor-pointer">
                   <AvatarImage src="https://github.com/shadcn.png" />
-                  <AvatarFallback>CN</AvatarFallback>
+                  <AvatarFallback>{friend.profileImageUrl}</AvatarFallback>
                 </Avatar>
               </div>
               <div className="flex justify-between">
                 <div className="flex-1">
-                  <p className="font-medium text-sm truncate">{friend.name}</p>
+                  <p className="font-medium text-sm truncate">
+                    {friend?.username}
+                  </p>
                 </div>
               </div>
             </div>

@@ -45,10 +45,10 @@ const SignupForm = () => {
   const form = useForm<z.infer<typeof singupSchema>>({
     resolver: zodResolver(singupSchema),
     defaultValues: {
-      username: '',
-      email: '',
-      password: '',
-      passwordConfirm: '',
+      username: 'test',
+      email: 'test@test.com',
+      password: 'test',
+      passwordConfirm: 'test',
     },
   });
 

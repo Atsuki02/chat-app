@@ -7,6 +7,7 @@ import authSlice from './slices/authSlice';
 import { authApi } from './services/authService';
 import { userApi } from './services/userService';
 import { cloudinaryApi } from './services/cloudinaryService';
+import { chatApi } from './services/chatService';
 
 const store = configureStore({
   reducer: {
@@ -18,12 +19,14 @@ const store = configureStore({
     [authApi.reducerPath]: authApi.reducer,
     [userApi.reducerPath]: userApi.reducer,
     [cloudinaryApi.reducerPath]: cloudinaryApi.reducer,
+    [chatApi.reducerPath]: chatApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(
       authApi.middleware,
       userApi.middleware,
       cloudinaryApi.middleware,
+      chatApi.middleware,
     ),
 });
 

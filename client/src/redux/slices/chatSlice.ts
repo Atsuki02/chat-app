@@ -6,6 +6,7 @@ export interface chatState {
   isSearchDrawerOpen: boolean;
   searchInput: string;
   currentList: string;
+  selectedChatRoom: string;
 }
 
 const initialState: chatState = {
@@ -14,6 +15,7 @@ const initialState: chatState = {
   isSearchDrawerOpen: false,
   searchInput: '',
   currentList: 'chats',
+  selectedChatRoom: '',
 };
 
 const chatSlice = createSlice({
@@ -35,6 +37,9 @@ const chatSlice = createSlice({
     setCurrentList: (state, action) => {
       state.currentList = action.payload;
     },
+    setSelectedChatRoom: (state, action) => {
+      state.selectedChatRoom = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(resetState, () => initialState);
@@ -47,6 +52,7 @@ export const {
   setSearchDrawerOpen,
   setSearchInput,
   setCurrentList,
+  setSelectedChatRoom,
 } = chatSlice.actions;
 
 export default chatSlice.reducer;

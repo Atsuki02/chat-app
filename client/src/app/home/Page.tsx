@@ -17,7 +17,7 @@ import { useSelector } from 'react-redux';
 import { useMediaQuery } from 'react-responsive';
 
 function Home() {
-  const { currentScreen, currentList } = useSelector(
+  const { currentScreen, currentList, selectedChatRoom } = useSelector(
     (state: RootState) => state.chat,
   );
   const { isSettingsOpen } = useSelector((state: RootState) => state.settings);
@@ -59,7 +59,11 @@ function Home() {
               defaultSize={isTablet ? 55 : 75}
             >
               <div className="w-full h-full relative ">
-                {currentList === 'chats' ? <Chat /> : <EmptyChat />}
+                {currentList === 'chats' && selectedChatRoom ? (
+                  <Chat />
+                ) : (
+                  <EmptyChat />
+                )}
               </div>
             </ResizablePanel>
           </ResizablePanelGroup>

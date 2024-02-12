@@ -1,8 +1,6 @@
 
 // import { Socket } from "socket.io";
 
-import { prisma } from "./prisma/seed";
-
 
 
 // const express = require("express");

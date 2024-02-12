@@ -2,13 +2,19 @@ import Cancel from '@/components/icons/Cancel';
 import ChatBubbleEllipsis from '@/components/icons/ChatBubbleEllipsis';
 import Favorite from '@/components/icons/Favorite';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+
 import {
   useAddFavoriteUserMutation,
+  useCreateDirectMessageChatRoomMutation,
   useGetFavoriteUsersQuery,
   useGetUserQuery,
   useRemoveFavoriteUserMutation,
 } from '@/redux/services/userService';
-import { setCurrentList, setCurrentScreen } from '@/redux/slices/chatSlice';
+import {
+  setCurrentList,
+  setCurrentScreen,
+  setSelectedChatRoom,
+} from '@/redux/slices/chatSlice';
 import { setFriendProfileOpen } from '@/redux/slices/friendSlice';
 import { AppDispatch, RootState } from '@/redux/store';
 import { Friend } from '@/types';
@@ -18,6 +24,8 @@ const FriendProfileModal = () => {
   const dispatch: AppDispatch = useDispatch();
 
   const { selectedFriendId } = useSelector((state: RootState) => state.friend);
+
+  console.log(selectedFriendId);
 
   const { data: friend } = useGetUserQuery(selectedFriendId, {
     skip: !selectedFriendId,
@@ -33,6 +41,8 @@ const FriendProfileModal = () => {
 
   const [addFavoriteUser] = useAddFavoriteUserMutation();
   const [removeFavoriteUser] = useRemoveFavoriteUserMutation();
+  const [createDirectMessageChatRoom] =
+    useCreateDirectMessageChatRoomMutation();
 
   const isFavorite = favoriteFriends?.some(
     (favFriend: Friend) => favFriend.id === friend?.id,
@@ -45,13 +55,24 @@ const FriendProfileModal = () => {
     dispatch(setFriendProfileOpen(false));
   };
 
-  const handleCreateGroup = (
-    event: React.MouseEvent<HTMLSpanElement, MouseEvent>,
-  ) => {
-    event.stopPropagation();
-    dispatch(setFriendProfileOpen(false));
-    dispatch(setCurrentScreen('chatsList'));
-    dispatch(setCurrentList('chats'));
+  const handleCreateDirectMessage = async () => {
+    try {
+      console.log({
+        userId1: userId,
+        userId2: selectedFriendId,
+      });
+      const newRoom = await createDirectMessageChatRoom({
+        userId1: userId,
+        userId2: selectedFriendId,
+      }).unwrap();
+      dispatch(setFriendProfileOpen(false));
+      dispatch(setCurrentScreen('chatsList'));
+      dispatch(setCurrentList('chats'));
+      dispatch(setSelectedChatRoom(newRoom.id));
+      console.log('Direct message chat room created successfully.');
+    } catch (err) {
+      console.error('Failed to create a direct message chat room.');
+    }
   };
 
   const handleToggleFavorites = async () => {
@@ -105,7 +126,7 @@ const FriendProfileModal = () => {
         <div className="sm:mt-8 mt-14">
           <div
             className="sm:h-7 sm:w-7 h-14 w-14 text-yellow-400"
-            onClick={handleCreateGroup}
+            onClick={handleCreateDirectMessage}
           >
             <ChatBubbleEllipsis />
           </div>
