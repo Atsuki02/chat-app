@@ -127,6 +127,14 @@ export const userApi = createApi({
       }),
       invalidatesTags: ['ChatRoom'],
     }),
+    createMessage: builder.mutation({
+      query: ({ content, userId, chatRoomId }) => ({
+        url: '/create-message',
+        method: 'POST',
+        body: { content, userId, chatRoomId },
+      }),
+      invalidatesTags: ['ChatRoom'],
+    }),
   }),
 });
 
@@ -144,4 +152,5 @@ export const {
   useGetChatRoomByIdAndUserIdQuery,
   useCreateDirectMessageChatRoomMutation,
   useCreateChatRoomWithMembersMutation,
+  useCreateMessageMutation,
 } = userApi;

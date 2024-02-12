@@ -24,7 +24,7 @@ const ChatHeader = ({
   return (
     <>
       {isFetchingChatRoom ? null : (
-        <div className="h-14 w-full bg-white flex justify-between items-center px-6  ">
+        <div className="min-h-14 w-full bg-white flex justify-between items-center px-6  ">
           <div className="flex gap-3 items-center">
             <div
               className="sm:hidden h-6 w-6"

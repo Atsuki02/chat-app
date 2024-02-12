@@ -95,18 +95,6 @@ const Chat = () => {
           <div>
             <ChatMessageInput />
           </div>
-          {/* <div>
-        <input
-          type="text"
-          placeholder="chat..."
-          onChange={(e) => setMessage(e.target.value)}
-          value={message}
-        />
-        <Button onClick={() => handleSendMessage()}>submit</Button>
-      </div>
-      {list.map((chat, i) => (
-        <div key={i}>{chat.message}</div>
-      ))} */}
         </div>
       )}
     </>

@@ -7,6 +7,7 @@ export interface chatState {
   searchInput: string;
   currentList: string;
   selectedChatRoom: string;
+  messageInput: string;
 }
 
 const initialState: chatState = {
@@ -16,6 +17,7 @@ const initialState: chatState = {
   searchInput: '',
   currentList: 'chats',
   selectedChatRoom: '',
+  messageInput: '',
 };
 
 const chatSlice = createSlice({
@@ -40,6 +42,9 @@ const chatSlice = createSlice({
     setSelectedChatRoom: (state, action) => {
       state.selectedChatRoom = action.payload;
     },
+    setMessageInput: (state, action) => {
+      state.messageInput = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(resetState, () => initialState);
@@ -53,6 +58,7 @@ export const {
   setSearchInput,
   setCurrentList,
   setSelectedChatRoom,
+  setMessageInput,
 } = chatSlice.actions;
 
 export default chatSlice.reducer;

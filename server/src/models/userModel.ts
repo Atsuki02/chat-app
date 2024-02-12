@@ -271,6 +271,18 @@ export const createChatRoomWithMembers = async (name: string, members: string[],
   return room;
 };
 
+export const createMessage = async (content: string, userId: string, chatRoomId: string) => {
+  const message = await prisma.message.create({
+    data: {
+      content,
+      userId,
+      chatRoomId,
+    },
+  });
+
+  return message;
+};
+
 
 
 
@@ -278,4 +290,4 @@ export const createChatRoomWithMembers = async (name: string, members: string[],
   
 
 
-module.exports = {createUser, findUserByEmail, createSession, findSessionById, findUserById, deleteUserById, deleteSessionById, toggleDarkMode, toggleNotifications, updateUserProfileImage, findAllUsers, findFavoriteUsers, addFavorite, removeFavorite, findUserChatRooms, findPinnedChatRoomsByUser, findChatRoomByIdAndUserId, createDirectMessageChatRoom, createChatRoomWithMembers}
+module.exports = {createUser, findUserByEmail, createSession, findSessionById, findUserById, deleteUserById, deleteSessionById, toggleDarkMode, toggleNotifications, updateUserProfileImage, findAllUsers, findFavoriteUsers, addFavorite, removeFavorite, findUserChatRooms, findPinnedChatRoomsByUser, findChatRoomByIdAndUserId, createDirectMessageChatRoom, createChatRoomWithMembers, createMessage}

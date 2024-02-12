@@ -12,6 +12,7 @@ export type Message = {
   chatRoomId: string;
   content: string;
   createdAt: Date;
+  userId: string;
   id: string;
   user: {
     id: string;

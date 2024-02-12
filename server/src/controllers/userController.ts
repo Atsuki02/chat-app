@@ -2,7 +2,7 @@
 
 import { User } from '@prisma/client';
 import { Request, Response } from 'express';
-const { findUserById, toggleDarkMode, toggleNotifications, updateUserProfileImage, findAllUsers, findFavoriteUsers, addFavorite, removeFavorite, findUserChatRooms, findPinnedChatRoomsByUser, findChatRoomByIdAndUserId, createDirectMessageChatRoom, createChatRoomWithMembers } = require('../models/userModel')
+const { findUserById, toggleDarkMode, toggleNotifications, updateUserProfileImage, findAllUsers, findFavoriteUsers, addFavorite, removeFavorite, findUserChatRooms, findPinnedChatRoomsByUser, findChatRoomByIdAndUserId, createDirectMessageChatRoom, createChatRoomWithMembers, createMessage } = require('../models/userModel')
 
 exports.getUser = async (req: Request, res: Response) => {
     const userId = req.params.userId;
@@ -184,6 +184,18 @@ exports.createChatRoomWithMembers = async (req: Request, res: Response) => {
   } catch (error) {
     console.error('Error creating chat room with members:', error);
     res.status(500).json({ error: 'Failed to create chat room with members.' });
+  }
+};
+
+exports.createMessage = async (req: Request, res: Response) => {
+  const { content, userId, chatRoomId } = req.body;
+
+  try {
+    const message = await createMessage(content, userId, chatRoomId)
+    res.json(message);
+  } catch (error) {
+    console.error("Failed to create message:", error);
+    res.status(500).json({ error: "Failed to create message." });
   }
 };
 

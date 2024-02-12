@@ -53,12 +53,12 @@ function Home() {
                 {isFriendProfileOpen && <FriendProfile />}
               </div>
             </ResizablePanel>
-            <ResizableHandle />
+            <ResizableHandle withHandle />
             <ResizablePanel
               minSize={isTablet ? 45 : 35}
               defaultSize={isTablet ? 55 : 75}
             >
-              <div className="w-full h-full relative ">
+              <div className="w-full h-full relative">
                 {currentList === 'chats' && selectedChatRoom ? (
                   <Chat />
                 ) : (
