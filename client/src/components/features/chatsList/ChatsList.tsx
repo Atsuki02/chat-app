@@ -129,13 +129,14 @@ const ChatsList = () => {
                           </p>
                         </div>
                         <div className="text-xs flex items-end text-slate-500 pl-4 whitespace-nowrap">
-                          {new Date(lastMessage?.createdAt).toLocaleTimeString(
-                            [],
-                            {
-                              hour: '2-digit',
-                              minute: '2-digit',
-                            },
-                          )}
+                          {chatRoom?.isDirectMessage &&
+                            new Date(lastMessage?.createdAt).toLocaleTimeString(
+                              [],
+                              {
+                                hour: '2-digit',
+                                minute: '2-digit',
+                              },
+                            )}
                         </div>
                       </div>
                     </div>

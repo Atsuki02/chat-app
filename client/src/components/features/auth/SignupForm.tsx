@@ -20,7 +20,7 @@ interface ErrorResponse {
   error: string;
 }
 
-const singupSchema = z
+const signUpSchema = z
   .object({
     username: z.string().min(2, {
       message: 'Username must be at least 2 characters.',
@@ -42,8 +42,8 @@ const singupSchema = z
   );
 
 const SignupForm = () => {
-  const form = useForm<z.infer<typeof singupSchema>>({
-    resolver: zodResolver(singupSchema),
+  const form = useForm<z.infer<typeof signUpSchema>>({
+    resolver: zodResolver(signUpSchema),
     defaultValues: {
       username: 'test',
       email: 'test@test.com',
@@ -59,7 +59,7 @@ const SignupForm = () => {
   const [registerUser, { isLoading, isError, error }] =
     useRegisterUserMutation();
 
-  const onSubmit = async (data: z.infer<typeof singupSchema>) => {
+  const onSubmit = async (data: z.infer<typeof signUpSchema>) => {
     try {
       const response = await registerUser(data).unwrap();
       console.log('Registration successful:', response);

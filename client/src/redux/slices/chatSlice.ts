@@ -8,6 +8,7 @@ export interface chatState {
   currentList: string;
   selectedChatRoom: string;
   messageInput: string;
+  isGroupProfileOpen: boolean;
 }
 
 const initialState: chatState = {
@@ -18,6 +19,7 @@ const initialState: chatState = {
   currentList: 'chats',
   selectedChatRoom: '',
   messageInput: '',
+  isGroupProfileOpen: false,
 };
 
 const chatSlice = createSlice({
@@ -45,6 +47,9 @@ const chatSlice = createSlice({
     setMessageInput: (state, action) => {
       state.messageInput = action.payload;
     },
+    setGroupProfileOpen: (state, action) => {
+      state.isGroupProfileOpen = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(resetState, () => initialState);
@@ -59,6 +64,7 @@ export const {
   setCurrentList,
   setSelectedChatRoom,
   setMessageInput,
+  setGroupProfileOpen,
 } = chatSlice.actions;
 
 export default chatSlice.reducer;

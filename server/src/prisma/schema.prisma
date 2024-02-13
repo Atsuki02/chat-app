@@ -91,6 +91,7 @@ model ChatRoom {
 }
 
 model PinnedChatRoom {
+  id         String   @id @default(uuid())
   userId     String
   chatRoomId String
   user       User     @relation(fields: [userId], references: [id])

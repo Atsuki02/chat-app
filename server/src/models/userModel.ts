@@ -174,7 +174,8 @@ async function findPinnedChatRoomsByUser(userId: string) {
             messages: true,
             chatRoomMembership: true,
           }
-        }
+        },
+       
       }
     });
 }
@@ -186,6 +187,11 @@ async function findChatRoomByIdAndUserId(userId: string, chatRoomId: string) {
         include: {
             chatRoomMembership: true, 
             messages: true,
+            pinnedByUsers: {
+              where: {
+                  userId: userId
+              },
+          }
         }
     });
 
@@ -283,6 +289,36 @@ export const createMessage = async (content: string, userId: string, chatRoomId:
   return message;
 };
 
+export const pinChatRoom = async  (userId: string, chatRoomId: string) => {
+  return prisma.pinnedChatRoom.create({
+      data: {
+          userId,
+          chatRoomId,
+      },
+  });
+}
+
+export const unPinChatRoom = async (userId: string, chatRoomId: string) => {
+  console.log(userId, chatRoomId)
+  return prisma.pinnedChatRoom.deleteMany({
+      where: {
+          userId,
+          chatRoomId
+      },
+  });
+}
+
+export const leaveChatRoom = (userId: string, chatRoomId: string) => {
+  return prisma.chatRoomMembership.deleteMany({
+    where: {
+      userId: userId,
+      chatRoomId: chatRoomId,
+    },
+  });
+}
+
+
+
 
 
 
@@ -290,4 +326,4 @@ export const createMessage = async (content: string, userId: string, chatRoomId:
   
 
 
-module.exports = {createUser, findUserByEmail, createSession, findSessionById, findUserById, deleteUserById, deleteSessionById, toggleDarkMode, toggleNotifications, updateUserProfileImage, findAllUsers, findFavoriteUsers, addFavorite, removeFavorite, findUserChatRooms, findPinnedChatRoomsByUser, findChatRoomByIdAndUserId, createDirectMessageChatRoom, createChatRoomWithMembers, createMessage}
+module.exports = {createUser, findUserByEmail, createSession, findSessionById, findUserById, deleteUserById, deleteSessionById, toggleDarkMode, toggleNotifications, updateUserProfileImage, findAllUsers, findFavoriteUsers, addFavorite, removeFavorite, findUserChatRooms, findPinnedChatRoomsByUser, findChatRoomByIdAndUserId, createDirectMessageChatRoom, createChatRoomWithMembers, createMessage, pinChatRoom, unPinChatRoom, leaveChatRoom}

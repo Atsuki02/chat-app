@@ -14,6 +14,7 @@ const ProtectedRoute = ({ children }: { children: ReactNode }) => {
     if (!isLoading) {
       if (session?.user) {
         dispatch(setUser(session.user));
+        navigate('/');
       } else if (isError) {
         navigate('/auth');
       }

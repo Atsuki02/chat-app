@@ -2,7 +2,7 @@
 
 import { User } from '@prisma/client';
 import { Request, Response } from 'express';
-const { findUserById, toggleDarkMode, toggleNotifications, updateUserProfileImage, findAllUsers, findFavoriteUsers, addFavorite, removeFavorite, findUserChatRooms, findPinnedChatRoomsByUser, findChatRoomByIdAndUserId, createDirectMessageChatRoom, createChatRoomWithMembers, createMessage } = require('../models/userModel')
+const { findUserById, toggleDarkMode, toggleNotifications, updateUserProfileImage, findAllUsers, findFavoriteUsers, addFavorite, removeFavorite, findUserChatRooms, findPinnedChatRoomsByUser, findChatRoomByIdAndUserId, createDirectMessageChatRoom, createChatRoomWithMembers, createMessage, pinChatRoom, unPinChatRoom, leaveChatRoom } = require('../models/userModel')
 
 exports.getUser = async (req: Request, res: Response) => {
     const userId = req.params.userId;
@@ -142,8 +142,6 @@ exports.getPinnedChatRoomsByUser = async (req: Request, res: Response) => {
 
 exports.getChatRoomByIdAndUserId = async (req: Request, res: Response) => {
     const { userId, chatRoomId } = req.params; 
-
-    console.log(userId, chatRoomId)
     try {
         const chatRoom = await findChatRoomByIdAndUserId(userId, chatRoomId);
 
@@ -151,7 +149,14 @@ exports.getChatRoomByIdAndUserId = async (req: Request, res: Response) => {
             return res.status(404).json({ message: 'Chat room not found' });
         }
 
-        res.json(chatRoom);
+        let isPinned = false;
+        if (chatRoom?.pinnedByUsers.length > 0) {
+            isPinned = true;
+        }
+
+        res.json({
+          ...chatRoom,
+          isPinned: isPinned});
     } catch (error) {
         console.error('Failed to fetch chat room:', error);
         res.status(500).json({ message: 'Failed to fetch chat room' });
@@ -199,3 +204,36 @@ exports.createMessage = async (req: Request, res: Response) => {
   }
 };
 
+exports.pinChatRoom = async (req: Request, res: Response) => {
+  const { userId, chatRoomId } = req.body;
+  try {
+    const pinnedChatRoom = await pinChatRoom(userId, chatRoomId)
+    res.json(pinnedChatRoom);
+  } catch (error) {
+    res.status(500).send({ error: 'Failed to pin the chat room.' });
+  }
+}
+
+exports.unPinChatRoom = async (req: Request, res: Response) => {
+  const { userId, chatRoomId } = req.body;
+
+  try {
+    const pinnedChatRoom = await unPinChatRoom(userId, chatRoomId)
+    res.json(pinnedChatRoom);
+  } catch (error) {
+    res.status(500).send({ error: 'Failed to unpin the chat room.' });
+  }
+}
+
+exports.leaveChatRoom = async (req: Request, res: Response) => {
+  const userId = req.params.userId; 
+  const chatRoomId = req.body.chatRoomId;
+
+  try {
+    await leaveChatRoom(userId, chatRoomId);
+    res.json({ message: 'Successfully left the chat room.' });
+  } catch (error) {
+    console.error('Failed to leave chat room:', error);
+    res.status(500).json({ error: 'Failed to leave the chat room.' });
+  }
+}

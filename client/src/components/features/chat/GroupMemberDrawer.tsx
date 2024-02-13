@@ -15,7 +15,7 @@ import { AppDispatch } from '@/redux/store';
 import { ChatRoom } from '@/types';
 import { useDispatch } from 'react-redux';
 
-const ChatHeader = ({
+const GroupMemberDrawer = ({
   chatRoom,
   isFetchingChatRoom,
 }: {
@@ -79,8 +79,9 @@ const ChatHeader = ({
               </p>
               {chatRoom?.isDirectMessage && (
                 <p className="text-xs">
-                  {chatRoom?.partnerUserInfo?.isOnline ? 'Online' : `Online`}
-                  {/* : `Last seen at ${chatRoom?.partnerUserInfo?.lastOnlineAt}`} */}
+                  {chatRoom?.partnerUserInfo?.isOnline
+                    ? 'Online'
+                    : `Last seen at ${chatRoom?.partnerUserInfo?.lastOnlineAt}`}
                 </p>
               )}
             </div>
@@ -102,4 +103,4 @@ const ChatHeader = ({
   );
 };
 
-export default ChatHeader;
+export default GroupMemberDrawer;

@@ -28,18 +28,21 @@ const ChatBody = ({
   isFetchingChatRoom: boolean;
 }) => {
   const { user } = useSelector((state: RootState) => state.auth);
+  const { selectedChatRoom } = useSelector((state: RootState) => state.chat);
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
   const [messages, setMessages] = useState<Message[]>(
     chatRoom.messages as unknown as Message[],
   );
 
-  console.log(chatRoom?.messages);
+  useEffect(() => {
+    setMessages(chatRoom.messages as unknown as Message[]);
+  }, [chatRoom.messages]);
 
   useEffect(() => {
     if (messagesEndRef.current) {
       messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
     }
-  }, [chatRoom.messages]);
+  }, [chatRoom.messages, selectedChatRoom]);
 
   useEffect(() => {
     const handleNewMessage = (newMessage: Message) => {
@@ -52,9 +55,7 @@ const ChatBody = ({
     return () => {
       socket.off('received_message', handleNewMessage);
     };
-  }, [chatRoom.id]);
-
-  console.log('createdAt:', messages);
+  }, [chatRoom.id, selectedChatRoom]);
 
   return (
     <>

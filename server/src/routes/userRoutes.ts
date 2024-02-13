@@ -1,11 +1,15 @@
+
 const express = require('express')
-const { getUser, toggleDarkMode, toggleNotifications, updateProfileImage, getAllUsers, getFavoriteUsers, addFavorite, removeFavorite, getUserChatRooms, getPinnedChatRoomsByUser, getChatRoomByIdAndUserId, createDirectMessageChatRoom, createChatRoomWithMembers, createMessage  } = require('../controllers/userController')
+const { getUser, toggleDarkMode, toggleNotifications, updateProfileImage, getAllUsers, getFavoriteUsers, addFavorite, removeFavorite, getUserChatRooms, getPinnedChatRoomsByUser, getChatRoomByIdAndUserId, createDirectMessageChatRoom, createChatRoomWithMembers, createMessage, pinChatRoom, unPinChatRoom, leaveChatRoom  } = require('../controllers/userController')
 const router = express.Router();
 
 router.get('/users', getAllUsers)
 router.post('/direct', createDirectMessageChatRoom)
 router.post('/create-group', createChatRoomWithMembers);
 router.post('/create-message', createMessage);
+router.post('/pin', pinChatRoom);
+router.delete('/unPin', unPinChatRoom);
+router.delete('/:userId/leave', leaveChatRoom);
 router.post('/:userId/favorites/add', addFavorite)
 router.delete('/:userId/favorites/remove', removeFavorite)
 router.get('/:userId', getUser)

@@ -1,6 +1,3 @@
-// import { Button } from '@/components/ui';
-// import { useState } from 'react';
-// import io, { Socket } from 'socket.io-client';
 import ChatHeader from './ChatHeader';
 import ChatBody from './ChatBody';
 import ChatMessageInput from './ChatMessageInput';
@@ -12,28 +9,8 @@ import ChatSearchInput from './ChatSearchInput';
 import Cancel from '@/components/icons/Cancel';
 import Loading from '@/components/ui/Loading';
 import { useGetChatRoomByIdAndUserIdQuery } from '@/redux/services/userService';
-// import { setSettingsOpen } from '@/redux/slices/settingsSlice';
-// const socket: Socket = io('http://localhost:8000');
-
-// interface Message {
-//   message: string;
-// }
 
 const Chat = () => {
-  // const [message, setMessage] = useState('');
-  // const [list, setList] = useState<Message[]>([]);
-  // const handleSendMessage = () => {
-  //   socket.emit('send_message', {
-  //     message: message,
-  //   });
-  // };
-
-  // receive from server
-  // socket.on('received_message', (data) => {
-  //   console.log(data);
-  //   setList([...list, data]);
-  // });
-
   const dispatch: AppDispatch = useDispatch();
   const handleCancelInput = () => {
     dispatch(setSearchInput(''));
@@ -45,9 +22,6 @@ const Chat = () => {
   const { isSearchDrawerOpen, selectedChatRoom } = useSelector(
     (state: RootState) => state.chat,
   );
-
-  // const { data: chatRoom, isLoading: isFetchingChatRoom } =
-  //   useGetChatRoomByIdQuery(selectedChatRoom || 'chatRoomId3');
 
   const { data: chatRoom, isLoading: isFetchingChatRoom } =
     useGetChatRoomByIdAndUserIdQuery(
@@ -81,10 +55,12 @@ const Chat = () => {
               </div>
             </div>
           ) : (
-            <ChatHeader
-              chatRoom={chatRoom}
-              isFetchingChatRoom={isFetchingChatRoom}
-            />
+            <>
+              <ChatHeader
+                chatRoom={chatRoom}
+                isFetchingChatRoom={isFetchingChatRoom}
+              />
+            </>
           )}
           <div className="flex-grow overflow-auto bg-yellow-50 ">
             <ChatBody

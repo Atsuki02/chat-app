@@ -3,6 +3,7 @@ import FriendProfile from '@/components/features/FriendsList/FriendProfile';
 import FriendsList from '@/components/features/FriendsList/FriendsList';
 import Chat from '@/components/features/chat/Chat';
 import EmptyChat from '@/components/features/chat/EmptyChat';
+import GroupProfile from '@/components/features/chat/GroupProfile';
 import ChatsList from '@/components/features/chatsList/ChatsList';
 import Settings from '@/components/features/settings/Settings';
 import SideBar from '@/components/features/sideBar/SideBar';
@@ -17,9 +18,8 @@ import { useSelector } from 'react-redux';
 import { useMediaQuery } from 'react-responsive';
 
 function Home() {
-  const { currentScreen, currentList, selectedChatRoom } = useSelector(
-    (state: RootState) => state.chat,
-  );
+  const { currentScreen, currentList, selectedChatRoom, isGroupProfileOpen } =
+    useSelector((state: RootState) => state.chat);
   const { isSettingsOpen } = useSelector((state: RootState) => state.settings);
   const { isCreateDrawerOpen } = useSelector(
     (state: RootState) => state.createGroup,
@@ -51,6 +51,7 @@ function Home() {
               <div className="hidden sm:block w-full bg-slate-500">
                 {currentList === 'chats' ? <ChatsList /> : <FriendsList />}
                 {isFriendProfileOpen && <FriendProfile />}
+                {isGroupProfileOpen && <GroupProfile />}
               </div>
             </ResizablePanel>
             <ResizableHandle withHandle />
@@ -81,6 +82,7 @@ function Home() {
               <div className="sm:block w-full  sm:min-w-72 bg-slate-500">
                 {currentList === 'chats' ? <ChatsList /> : <FriendsList />}
                 {isFriendProfileOpen && <FriendProfile />}
+                {isGroupProfileOpen && <GroupProfile />}
               </div>
             ) : (
               <div className="w-full">

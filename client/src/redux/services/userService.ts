@@ -135,6 +135,30 @@ export const userApi = createApi({
       }),
       invalidatesTags: ['ChatRoom'],
     }),
+    pinChatRoom: builder.mutation({
+      query: ({ userId, chatRoomId }) => ({
+        url: '/pin',
+        method: 'POST',
+        body: { userId, chatRoomId },
+      }),
+      invalidatesTags: ['ChatRoom'],
+    }),
+    unPinChatRoom: builder.mutation({
+      query: ({ userId, chatRoomId }) => ({
+        url: '/unPin',
+        method: 'DELETE',
+        body: { userId, chatRoomId },
+      }),
+      invalidatesTags: ['ChatRoom'],
+    }),
+    leaveChatRoom: builder.mutation({
+      query: ({ userId, chatRoomId }) => ({
+        url: `/${userId}/leave`,
+        method: 'DELETE',
+        body: { chatRoomId },
+      }),
+      invalidatesTags: ['ChatRoom'],
+    }),
   }),
 });
 
@@ -153,4 +177,7 @@ export const {
   useCreateDirectMessageChatRoomMutation,
   useCreateChatRoomWithMembersMutation,
   useCreateMessageMutation,
+  usePinChatRoomMutation,
+  useUnPinChatRoomMutation,
+  useLeaveChatRoomMutation,
 } = userApi;
