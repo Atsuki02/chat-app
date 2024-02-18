@@ -56,17 +56,17 @@ const ChatsList = () => {
       {isFetchingChatRooms ? (
         <Loading />
       ) : (
-        <div className="p-4 bg-white h-screen flex flex-col gap-2 overflow-auto ">
+        <div className="p-4 bg-white h-screen flex flex-col gap-2 overflow-auto hide-scrollbar">
           <div className="flex justify-between items-center mb-4">
             <div
-              className="text-yellow-500 h-6 w-6 cursor-pointer"
+              className="text-blue-500 h-6 w-6 cursor-pointer"
               onClick={() => dispatch(setSideBarDrawerOpen(true))}
             >
               <Hamburger />
             </div>
             <h2 className="text-lg font-semibold  text-slate-800">Chats</h2>
             <div
-              className="text-yellow-500 h-5 w-5 cursor-pointer"
+              className="text-blue-500 h-5 w-5 cursor-pointer"
               onClick={() => dispatch(setCreateDrawerOpen(true))}
             >
               <Pencil />
@@ -79,7 +79,7 @@ const ChatsList = () => {
             <Input
               type="text"
               placeholder="Search..."
-              className="pl-9 bg-yellow-50 focus-visible:ring-yellow-400 rounded-lg h-8"
+              className="pl-9 bg-blue-50 focus-visible:ring-blue-400 rounded-lg h-8"
             />
           </div>
 
@@ -94,7 +94,7 @@ const ChatsList = () => {
                 return (
                   <li
                     key={i}
-                    className={`flex items-center mb-4 last:mb-0 cursor-pointer p-3 rounded-xl hover:bg-yellow-300 ${chatRoom?.id === selectedChatRoom ? 'bg-yellow-400' : ''}`}
+                    className={`flex items-center mb-4 last:mb-0 cursor-pointer p-3 rounded-xl hover:bg-blue-300 ${chatRoom?.id === selectedChatRoom ? 'bg-blue-400' : ''}`}
                     onClick={() => handleSelectChatRoom(chatRoom?.id)}
                   >
                     <div className="flex gap-3 items-center">
@@ -116,7 +116,7 @@ const ChatsList = () => {
                           </AvatarFallback>
                         </Avatar>
                         {chatRoom.isDirectMessage && (
-                          <div className="absolute bottom-0 right-0 bg-green-400 w-3 h-3 rounded-full border-2 border-white"></div>
+                          <div className="absolute bottom-0 right-0 bg-blue-400 w-3 h-3 rounded-full border-2 border-white"></div>
                         )}
                       </div>
                       <div className="flex justify-between max-w-32">
@@ -154,7 +154,7 @@ const ChatsList = () => {
               return (
                 <li
                   key={i}
-                  className={`flex items-center mb-4 last:mb-0 cursor-pointer p-3 rounded-xl hover:bg-yellow-300 ${chatRoom?.id === selectedChatRoom ? 'bg-yellow-300' : ''}`}
+                  className={`flex items-center mb-4 last:mb-0 cursor-pointer p-3 rounded-xl hover:bg-blue-300 ${chatRoom?.id === selectedChatRoom ? 'bg-blue-300' : ''}`}
                   onClick={() => handleSelectChatRoom(chatRoom.id)}
                 >
                   <div className="flex gap-3 items-center">

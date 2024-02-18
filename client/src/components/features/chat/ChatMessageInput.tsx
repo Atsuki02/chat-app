@@ -68,13 +68,13 @@ const ChatMessageInput = () => {
         value={messageInput}
         maxLength={1000}
         placeholder="Enter a message"
-        className="w-full bg-yellow-50 focus-visible:ring-yellow-400 resize-none border-none rounded-md overflow-auto p-2"
+        className="w-full  bg-blue-50   focus-visible:ring-blue-400 resize-none border-none rounded-md overflow-auto p-2"
         onChange={(e) => {
           adjustHeight();
           dispatch(setMessageInput(e.target.value));
         }}
       />
-      <Button className="w-6 h-6  p-5 text-white absolute -bottom-1 right-0 -translate-x-1/2 -translate-y-1/2">
+      <Button className="w-6 h-6 bg-blue-500 hover:bg-blue-600  p-5 text-white absolute -bottom-1 right-0 -translate-x-1/2 -translate-y-1/2">
         <div onClick={handleSendMessage}>
           <SendIcon />
         </div>

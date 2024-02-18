@@ -22,6 +22,8 @@ const CreateGroup = ({ friends }: { friends: Friend[] }) => {
     (state: RootState) => state.createGroup,
   );
 
+  const { user } = useSelector((state: RootState) => state.auth);
+
   const handleSelectMember = (friendId: string) => {
     if (selectedMembers.includes(friendId)) {
       dispatch(removeSelectedMember(friendId));
@@ -46,7 +48,7 @@ const CreateGroup = ({ friends }: { friends: Friend[] }) => {
   return (
     <div className="flex flex-col py-6 px-4 sm:p-4 w-full relative cursor-default">
       <span
-        className="absolute top-6 left-6 sm:top-4 sm:left-4 text-yellow-500 text-xs cursor-pointer"
+        className="absolute top-6 left-6 sm:top-4 sm:left-4 text-blue-500 text-xs cursor-pointer"
         onClick={handleCancel}
       >
         Cancel
@@ -59,7 +61,7 @@ const CreateGroup = ({ friends }: { friends: Friend[] }) => {
         </p>
       </div>
       <span
-        className="absolute top-6 right-6 sm:top-4 sm:right-4 text-yellow-500 text-xs cursor-pointer"
+        className="absolute top-6 right-6 sm:top-4 sm:right-4 text-blue-500 text-xs cursor-pointer"
         onClick={handleNext}
       >
         Next
@@ -71,11 +73,12 @@ const CreateGroup = ({ friends }: { friends: Friend[] }) => {
         <Input
           type="text"
           placeholder="Search by name"
-          className=" pl-8 sm:pl-7 bg-yellow-50 focus-visible:ring-yellow-400 rounded-md sm:rounded-lg h-8 sm:h-6 text-xs"
+          className=" pl-8 sm:pl-7 bg-blue-50 focus-visible:ring-blue-400 rounded-md sm:rounded-lg h-8 sm:h-6 text-xs"
         />
       </div>
       <ul className="list-none w-full flex mb-6 sm:mb-4 gap-1 overflow-y-auto hide-scrollbar  ">
         {friends
+
           .filter((friend) => selectedMembers.includes(friend.id))
           .map((friend) => (
             <li
@@ -114,36 +117,38 @@ const CreateGroup = ({ friends }: { friends: Friend[] }) => {
             : 'max-h-80 sm:max-h-36'
         }`}
       >
-        {friends.map((friend) => (
-          <li
-            key={friend.id}
-            className="flex items-center last:mb-0 cursor-pointer p-1.5 py-2 sm:p-1.5 rounded-xl"
-            onClick={() => handleSelectMember(friend.id)}
-          >
-            <div className="flex justify-start items-center w-full">
-              <div className="sm:mr-3 mr-4">
-                <Avatar className="sm:w-6 sm:h-6 w-10 h-10 cursor-pointer">
-                  <AvatarImage src="https://github.com/shadcn.png" />
-                  <AvatarFallback>{friend.profileImageUrl}</AvatarFallback>
-                </Avatar>
-              </div>
-              <div className="flex justify-between">
-                <div className="flex-1">
-                  <p className="font-medium text-sm truncate">
-                    {friend?.username}
-                  </p>
+        {friends
+          ?.filter((friend: { id: string }) => friend.id !== user?.id)
+          .map((friend) => (
+            <li
+              key={friend.id}
+              className="flex items-center last:mb-0 cursor-pointer p-1.5 py-2 sm:p-1.5 rounded-xl"
+              onClick={() => handleSelectMember(friend.id)}
+            >
+              <div className="flex justify-start items-center w-full">
+                <div className="sm:mr-3 mr-4">
+                  <Avatar className="sm:w-6 sm:h-6 w-10 h-10 cursor-pointer">
+                    <AvatarImage src="https://github.com/shadcn.png" />
+                    <AvatarFallback>{friend.profileImageUrl}</AvatarFallback>
+                  </Avatar>
+                </div>
+                <div className="flex justify-between">
+                  <div className="flex-1">
+                    <p className="font-medium text-sm truncate">
+                      {friend?.username}
+                    </p>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div
-              className={`p-1 w-8 h-8 sm:w-5 sm:h-5 flex items-center border-[1px] rounded-full ${selectedMembers.includes(friend.id) ? 'bg-green-400' : ''}`}
-            >
-              <div className="text-white">
-                {selectedMembers.includes(friend.id) && <Check />}
+              <div
+                className={`p-1 w-8 h-8 sm:w-5 sm:h-5 flex items-center border-[1px] rounded-full ${selectedMembers.includes(friend.id) ? 'bg-blue-400' : ''}`}
+              >
+                <div className="text-white">
+                  {selectedMembers.includes(friend.id) && <Check />}
+                </div>
               </div>
-            </div>
-          </li>
-        ))}
+            </li>
+          ))}
       </ul>
     </div>
   );

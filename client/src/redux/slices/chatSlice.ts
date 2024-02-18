@@ -9,6 +9,7 @@ export interface chatState {
   selectedChatRoom: string;
   messageInput: string;
   isGroupProfileOpen: boolean;
+  isShowGroupMemberList: boolean;
 }
 
 const initialState: chatState = {
@@ -20,6 +21,7 @@ const initialState: chatState = {
   selectedChatRoom: '',
   messageInput: '',
   isGroupProfileOpen: false,
+  isShowGroupMemberList: false,
 };
 
 const chatSlice = createSlice({
@@ -50,6 +52,9 @@ const chatSlice = createSlice({
     setGroupProfileOpen: (state, action) => {
       state.isGroupProfileOpen = action.payload;
     },
+    setShowGroupMemberList: (state, action) => {
+      state.isShowGroupMemberList = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(resetState, () => initialState);
@@ -65,6 +70,7 @@ export const {
   setSelectedChatRoom,
   setMessageInput,
   setGroupProfileOpen,
+  setShowGroupMemberList,
 } = chatSlice.actions;
 
 export default chatSlice.reducer;

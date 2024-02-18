@@ -182,41 +182,65 @@ async function findPinnedChatRoomsByUser(userId: string) {
 
 
 async function findChatRoomByIdAndUserId(userId: string, chatRoomId: string) {
-    const chatRoom = await prisma.chatRoom.findUnique({
-        where: { id: chatRoomId },
-        include: {
-            chatRoomMembership: true, 
-            messages: true,
-            pinnedByUsers: {
+  const chatRoom = await prisma.chatRoom.findUnique({
+      where: { id: chatRoomId },
+      include: {
+          chatRoomMembership: {
+              include: {
+                  user: {
+                      select: {
+                          id: true,
+                          username: true,
+                          isOnline: true,
+                          lastOnlineAt: true,
+                          profileImageUrl: true,
+                          createdAt: true,
+                          updatedAt: true,
+                      }
+                  }
+              }
+          }, 
+          messages: true,
+          pinnedByUsers: {
               where: {
                   userId: userId
               },
           }
-        }
-    });
+      }
+  });
 
-    if (chatRoom && chatRoom.isDirectMessage) {
-        const otherUserId = chatRoom.chatRoomMembership
-            .map(membership => membership.userId)
-            .find(id => id !== userId);
+  if (chatRoom && chatRoom.isDirectMessage) {
+      const otherUserId = chatRoom.chatRoomMembership
+          .map(membership => membership.userId)
+          .find(id => id !== userId);
 
-        if (!otherUserId) {
-            console.error('Other user ID not found for direct message chat room.');
-            return chatRoom; 
-        }
-            
-        const partnerUserInfo = await prisma.user.findUnique({
-            where: { id: otherUserId }
-        });
+      if (!otherUserId) {
+          console.error('Other user ID not found for direct message chat room.');
+          return chatRoom; 
+      }
+          
+      const partnerUserInfo = await prisma.user.findUnique({
+          where: { id: otherUserId },
+          select: {
+              id: true,
+              username: true,
+              isOnline: true,
+              lastOnlineAt: true,
+              profileImageUrl: true,
+              createdAt: true,
+              updatedAt: true,
+          }
+      });
 
-        return {
-            ...chatRoom,
-            partnerUserInfo: partnerUserInfo ? partnerUserInfo : null,
-        };
-    }
+      return {
+          ...chatRoom,
+          partnerUserInfo: partnerUserInfo ? partnerUserInfo : null,
+      };
+  }
 
-    return chatRoom;
+  return chatRoom;
 }
+
 
 async function createDirectMessageChatRoom(userId1: string, userId2: string) {
     const existingRoom = await prisma.chatRoom.findFirst({

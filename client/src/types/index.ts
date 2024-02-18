@@ -22,7 +22,13 @@ export type Message = {
 
 export type ChatRoom = {
   isPinned: boolean;
-  chatRoomImageUrl?: string;
+  chatRoomMembership: {
+    profileImageUrl: string | undefined;
+    chatRoomId: string;
+    userId: string;
+    user: Friend;
+  }[];
+  chatRoomImageUrl: string;
   id: string;
   isDirectMessage: boolean;
   messages: Message[];

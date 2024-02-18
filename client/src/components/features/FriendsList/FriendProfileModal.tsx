@@ -14,6 +14,7 @@ import {
   setCurrentList,
   setCurrentScreen,
   setSelectedChatRoom,
+  setShowGroupMemberList,
 } from '@/redux/slices/chatSlice';
 import { setFriendProfileOpen } from '@/redux/slices/friendSlice';
 import { AppDispatch, RootState } from '@/redux/store';
@@ -65,6 +66,7 @@ const FriendProfileModal = () => {
         userId1: userId,
         userId2: selectedFriendId,
       }).unwrap();
+      dispatch(setShowGroupMemberList(false));
       dispatch(setFriendProfileOpen(false));
       dispatch(setCurrentScreen('chatsList'));
       dispatch(setCurrentList('chats'));
@@ -109,7 +111,7 @@ const FriendProfileModal = () => {
         className="absolute w-8 h-8 sm:w-5 sm:h-5 top-6 right-6 sm:top-4 sm:right-4 text-white text-xs"
         onClick={handleToggleFavorites}
       >
-        <Favorite fill={isFavorite ? 'rgb(0 185 129)' : 'none'} />
+        <Favorite fill={isFavorite ? 'rgb(30 58 138)' : 'none'} />
       </div>
       <div className="flex flex-col items-center justify-center mt-56 sm:mt-28">
         <div className="mt-2">
@@ -125,7 +127,7 @@ const FriendProfileModal = () => {
         </p>
         <div className="sm:mt-8 mt-14">
           <div
-            className="sm:h-7 sm:w-7 h-14 w-14 text-yellow-400"
+            className="sm:h-7 sm:w-7 h-14 w-14 text-blue-400"
             onClick={handleCreateDirectMessage}
           >
             <ChatBubbleEllipsis />

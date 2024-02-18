@@ -55,14 +55,12 @@ const Chat = () => {
               </div>
             </div>
           ) : (
-            <>
-              <ChatHeader
-                chatRoom={chatRoom}
-                isFetchingChatRoom={isFetchingChatRoom}
-              />
-            </>
+            <ChatHeader
+              chatRoom={chatRoom}
+              isFetchingChatRoom={isFetchingChatRoom}
+            />
           )}
-          <div className="flex-grow overflow-auto bg-yellow-50 ">
+          <div className="flex-grow overflow-auto bg-blue-50 ">
             <ChatBody
               chatRoom={chatRoom}
               isFetchingChatRoom={isFetchingChatRoom}

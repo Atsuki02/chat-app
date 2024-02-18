@@ -11,15 +11,27 @@ import {
 import { AppDispatch, RootState } from '@/redux/store';
 import { useDispatch, useSelector } from 'react-redux';
 import SelectionOption from './SelectionOption';
+import { useTheme } from '@/layout/ThemeProvider';
+import { useEffect } from 'react';
 
 const SettingSelection = ({ type }: { type: string }) => {
   const dispatch: AppDispatch = useDispatch();
 
   const { user } = useSelector((state: RootState) => state.auth);
 
-  const { data } = useGetUserQuery(user?.id, {
+  const { data, isSuccess } = useGetUserQuery(user?.id, {
     skip: !user?.id,
   });
+
+  const { setTheme } = useTheme();
+
+  useEffect(() => {
+    if (isSuccess && data) {
+      const themePreference = data.darkMode ? 'dark' : 'light';
+      setTheme(themePreference);
+      localStorage.setItem('vite-ui-theme', themePreference);
+    }
+  }, [data, isSuccess, setTheme]);
 
   const [updateUserDarkMode] = useUpdateUserDarkModeMutation();
   const [updateUserNotifications] = useUpdateUserNotificationsMutation();
@@ -58,13 +70,13 @@ const SettingSelection = ({ type }: { type: string }) => {
   return (
     <div className="flex flex-col items-center py-6 px-4 sm:p-4  relative">
       <div
-        className="absolute w-5 h-5 top-6 left-6 sm:top-4 sm:left-4 text-yellow-500 text-xs"
+        className="absolute w-5 h-5 top-6 left-6 sm:top-4 sm:left-4 text-blue-500 text-xs"
         onClick={handleChangeCurrentScreen}
       >
         <ChevronLeft />
       </div>
       <span
-        className="absolute top-6 right-6 sm:top-4 sm:right-4 text-yellow-500 text-xs"
+        className="absolute top-6 right-6 sm:top-4 sm:right-4 text-blue-500 text-xs"
         onClick={handleCancel}
       >
         Done

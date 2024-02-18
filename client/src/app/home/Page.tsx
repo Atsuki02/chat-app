@@ -37,7 +37,7 @@ function Home() {
       {isDesktop || isTablet ? (
         // Desktop view
 
-        <div className="flex w-screen h-screen font-main">
+        <div className="flex w-screen h-screen font-main ">
           <div className="hidden sm:block h-full">
             <SideBar />
             {isSettingsOpen && <Settings />}
@@ -54,7 +54,7 @@ function Home() {
                 {isGroupProfileOpen && <GroupProfile />}
               </div>
             </ResizablePanel>
-            <ResizableHandle withHandle />
+            <ResizableHandle />
             <ResizablePanel
               minSize={isTablet ? 45 : 35}
               defaultSize={isTablet ? 55 : 75}

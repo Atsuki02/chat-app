@@ -36,21 +36,10 @@ const GroupProfileModal = () => {
     },
   );
 
-  console.log(chatRoom);
-
   const userId = user?.id;
 
   const [pinChatRoom] = usePinChatRoomMutation();
   const [unPinChatRoom] = useUnPinChatRoomMutation();
-
-  //   const [addFavoriteUser] = useAddFavoriteUserMutation();
-  //   const [removeFavoriteUser] = useRemoveFavoriteUserMutation();
-  //   const [createDirectMessageChatRoom] =
-  //     useCreateDirectMessageChatRoomMutation();
-
-  //   const isFavorite = favoriteFriends?.some(
-  //     (favFriend: Friend) => favFriend.id === friend?.id,
-  //   );
 
   const handleCloseModal = (
     event: React.MouseEvent<HTMLSpanElement, MouseEvent>,
@@ -113,7 +102,7 @@ const GroupProfileModal = () => {
         <Cancel />
       </div>
       <div
-        className="absolute w-8 h-8 sm:w-6 sm:h-6 top-6 right-6 sm:top-4 sm:right-4 text-green-600 bg-red text-xs"
+        className="absolute w-8 h-8 sm:w-6 sm:h-6 top-6 right-6 sm:top-4 sm:right-4 text-blue-600 bg-red text-xs"
         onClick={handleTogglePinned}
       >
         <Pin isFilled={chatRoom?.isPinned} />

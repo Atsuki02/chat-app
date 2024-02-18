@@ -60,7 +60,7 @@ const ChatBody = ({
   return (
     <>
       {isFetchingChatRoom ? null : (
-        <div className="w-full p-4 bg-yellow-50  ">
+        <div className="w-full p-4 bg-blue-50  ">
           {messages?.map((message, i) => (
             <div
               key={i}
@@ -88,7 +88,7 @@ const ChatBody = ({
               <span
                 className={`py-1.5 px-2 sm:max-w-xs max-w-56  break-words  rounded-lg ${
                   message?.userId === user?.id
-                    ? 'bg-yellow-500 text-white'
+                    ? 'bg-blue-500 text-white'
                     : 'bg-white'
                 }`}
               >

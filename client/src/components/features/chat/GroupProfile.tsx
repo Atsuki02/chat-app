@@ -26,7 +26,7 @@ const GroupProfile = () => {
       }
     >
       <DrawerContent
-        className="flex bg-gradient-to-b from-yellow-400 via-yellow-300 to-yellow-400 font-main inset-x-0 top-auto sm:inset-0 m-auto w-full h-full sm:min-w-96 sm:w-[300px] sm:h-[350px] rounded-tl-lg  rounded-tr-lg sm:rounded-lg after:hidden"
+        className="flex bg-gradient-to-b from-blue-400 via-blue-300 to-blue-400 font-main inset-x-0 top-auto sm:inset-0 m-auto w-full h-full sm:min-w-96 sm:w-[300px] sm:h-[350px] rounded-tl-lg  rounded-tr-lg sm:rounded-lg after:hidden"
         onClick={handleOpenChange}
       >
         <GroupProfileModal />

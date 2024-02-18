@@ -15,7 +15,7 @@ const ChatSearchInput = () => {
         value={searchInput}
         onChange={(e) => dispatch(setSearchInput(e.target.value))}
         placeholder="Search in conversation"
-        className="w-full pr-10 bg-yellow-50  focus-visible:ring-yellow-400 resize-none border-none rounded-md overflow-auto "
+        className="w-full pr-10 bg-blue-50  focus-visible:ring-blue-400 resize-none border-none rounded-md overflow-auto "
       />
       {searchInput.length >= 1 && (
         <div

@@ -60,19 +60,19 @@ const SideBar = () => {
           }
         >
           <DrawerContent onClick={handleOpenChange}>
-            <div className="flex flex-col mx-auto w-full max-w-sm font-main text-sm">
+            <div className="flex flex-col mx-auto w-full max-w-sm font-main text-sm dark:bg--background">
               <div className="flex justify-between items-center mb-4 p-4  ">
                 <div className="flex justify-start items-center">
                   <Avatar className="w-7 h-7 cursor-pointer mr-2 ">
                     <AvatarImage src="https://github.com/shadcn.png" />
                     <AvatarFallback>CN</AvatarFallback>
                   </Avatar>
-                  <span className="font-medium  text-sm text-slate-800 truncate max-w-32 break-words">
+                  <span className="font-medium  text-sm dark:text-white truncate max-w-32 break-words">
                     {data?.username}
                   </span>
                 </div>
                 <div
-                  className="h-6 w-6 text-yellow-500"
+                  className="h-6 w-6 text-primary dark:text-primary"
                   onClick={() => dispatch(setSettingsOpen(true))}
                 >
                   <Settings />

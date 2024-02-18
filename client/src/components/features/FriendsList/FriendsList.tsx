@@ -41,17 +41,17 @@ const FriendsList = () => {
       {isFetchingFriends || isFetchingFavoriteFriends ? (
         <Loading />
       ) : (
-        <div className="p-4 bg-white h-screen flex flex-col gap-2 overflow-auto ">
+        <div className="p-4 bg-white h-screen flex flex-col gap-2 overflow-auto hide-scrollbar">
           <div className="flex justify-between items-center mb-4">
             <div
-              className="text-yellow-500 h-6 w-6 cursor-pointer"
+              className="text-blue-500 h-6 w-6 cursor-pointer"
               onClick={() => dispatch(setSideBarDrawerOpen(true))}
             >
               <Hamburger />
             </div>
             <h2 className="text-lg font-semibold  text-slate-800">Friends</h2>
             <div
-              className="text-yellow-500 h-5 w-5 cursor-pointer"
+              className="text-blue-500 h-5 w-5 cursor-pointer"
               onClick={() => dispatch(setCreateDrawerOpen(true))}
             >
               <Pencil />
@@ -64,7 +64,7 @@ const FriendsList = () => {
             <Input
               type="text"
               placeholder="Search..."
-              className="pl-9 bg-yellow-50 focus-visible:ring-yellow-400 rounded-lg h-8"
+              className="pl-9 bg-blue-50 focus-visible:ring-blue-400 rounded-lg h-8"
             />
           </div>
 

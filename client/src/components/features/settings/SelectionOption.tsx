@@ -19,7 +19,7 @@ const SelectionOption = ({
       </div>
       {isChecked && (
         <div className="flex items-center">
-          <div className="h-4 w-4 font text-yellow-400">
+          <div className="h-4 w-4 font text-blue-400">
             <CheckIcon />
           </div>
         </div>

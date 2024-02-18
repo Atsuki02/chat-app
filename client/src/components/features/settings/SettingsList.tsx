@@ -111,9 +111,9 @@ const SettingsList = () => {
   };
 
   return (
-    <div className="flex flex-col items-center py-6 px-4 sm:p-4 cursor-default  relative">
+    <div className="flex flex-col items-center py-6 px-4 sm:p-4 cursor-default relative">
       <span
-        className="absolute top-6 right-6 sm:top-4 sm:right-4 text-yellow-500 text-xs cursor-pointer"
+        className="absolute top-6 right-6 sm:top-4 sm:right-4 text-blue-500 text-xs cursor-pointer"
         onClick={handleCancel}
       >
         Done
@@ -124,7 +124,7 @@ const SettingsList = () => {
       <div className="relative mt-2">
         <Avatar className="w-11 h-11">
           <AvatarImage src={data?.profileImageUrl} />
-          <AvatarFallback className="bg-yellow-200">
+          <AvatarFallback className="bg-blue-200">
             {data?.username.substring(0, 2).toUpperCase()}
           </AvatarFallback>
         </Avatar>
@@ -189,7 +189,7 @@ const SettingsList = () => {
           onClick={handleLogout}
         >
           <div className="flex items-center gap-2">
-            <div className="h-5 w-5 p-1 flex items-center justify-center rounded-full bg-blue-300 text-white">
+            <div className="h-5 w-5 p-1 flex items-center justify-center rounded-full bg-slate-400 text-white">
               <Logout />
             </div>
             <span className="text-xs">Log out</span>

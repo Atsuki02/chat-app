@@ -6,7 +6,7 @@ const Loading = ({ className = '' }: { className?: string }) => {
       className={`fixed inset-0 bg-white bg-opacity-50 flex items-center justify-center ${className}`}
     >
       <ReloadIcon
-        className="animate-spin text-yellow-300"
+        className="animate-spin text-blue-300"
         style={{ width: '50px', height: '50px' }}
       />
     </div>

@@ -129,7 +129,7 @@ const SetUpGroupProfile = ({ friends }: { friends: Friend[] }) => {
   return (
     <div className="flex flex-col py-6 px-4 sm:p-4 w-full relative cursor-default">
       <span
-        className="absolute top-6 left-6 sm:top-4 sm:left-4 h-5 w-5 text-yellow-500 text-xs cursor-pointer"
+        className="absolute top-6 left-6 sm:top-4 sm:left-4 h-5 w-5 text-blue-500 text-xs cursor-pointer"
         onClick={handleChangeScreen}
       >
         <ChevronLeft />
@@ -138,7 +138,7 @@ const SetUpGroupProfile = ({ friends }: { friends: Friend[] }) => {
         <p className="font-semibold text-sm">Set up group profile</p>
       </div>
       <span
-        className="absolute top-6 right-6 sm:top-4 sm:right-4 text-yellow-500 text-xs cursor-pointer"
+        className="absolute top-6 right-6 sm:top-4 sm:right-4 text-blue-500 text-xs cursor-pointer"
         onClick={handleCreate}
       >
         Create
@@ -166,7 +166,7 @@ const SetUpGroupProfile = ({ friends }: { friends: Friend[] }) => {
         </div>
         <div className="w-[300px] relative">
           <Input
-            className="border-0 max-w-56 focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-ring focus-visible:ring-offset-0 caret-yellow-400 "
+            className="border-0 max-w-56 focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-ring focus-visible:ring-offset-0 caret-blue-400 "
             value={groupNameInput}
             onChange={handleGroupNameInputChange}
             placeholder="Group name"
