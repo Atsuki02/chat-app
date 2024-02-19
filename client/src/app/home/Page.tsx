@@ -59,7 +59,7 @@ function Home() {
               minSize={isTablet ? 45 : 35}
               defaultSize={isTablet ? 55 : 75}
             >
-              <div className="w-full h-full relative">
+              <div className="w-full h-full relative bg-background">
                 {currentList === 'chats' && selectedChatRoom ? (
                   <Chat />
                 ) : (

@@ -4,7 +4,16 @@ import { chatRooms } from './chatRooms';
 import { readReceipts } from './readReceiptData';
 import { messages } from './messageData';
 import { favorites } from './favoritesData';
-import { users } from "./userData";
-import { sessions } from "./sessionData";
+import { users } from './userData';
+import { sessions } from './sessionData';
 
-export { users, sessions, favorites, messages, readReceipts, chatRooms, pinnedChatRooms, chatRoomMemberships }
+export {
+  users,
+  sessions,
+  favorites,
+  messages,
+  readReceipts,
+  chatRooms,
+  pinnedChatRooms,
+  chatRoomMemberships,
+};

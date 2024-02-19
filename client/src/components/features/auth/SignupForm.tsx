@@ -15,6 +15,7 @@ import { Input } from '@/components/ui';
 import { useRegisterUserMutation } from '@/redux/services/authService';
 import { useNavigate } from 'react-router-dom';
 import { useToast } from '@/components/ui/use-toast';
+import { useUpdateUserOnlineStatusMutation } from '@/redux/services/userService';
 
 interface ErrorResponse {
   error: string;
@@ -59,9 +60,13 @@ const SignupForm = () => {
   const [registerUser, { isLoading, isError, error }] =
     useRegisterUserMutation();
 
+  const [updateUserOnlineStatus] = useUpdateUserOnlineStatusMutation();
+
   const onSubmit = async (data: z.infer<typeof signUpSchema>) => {
     try {
       const response = await registerUser(data).unwrap();
+      console.log(response);
+      await updateUserOnlineStatus(response.id);
       console.log('Registration successful:', response);
       if (response.sessionId) {
         localStorage.setItem('sessionId', response.sessionId);
@@ -82,7 +87,7 @@ const SignupForm = () => {
   };
 
   return (
-    <div className="flex justify-center items-center w-full p-6 text-sm border-2 border-gray-100 rounded-md">
+    <div className="flex justify-center items-center w-full p-6 text-sm border rounded-md">
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
@@ -145,7 +150,7 @@ const SignupForm = () => {
             )}
           />
           {isError && error && (
-            <div className="text-red-500">
+            <div className="text-destructive">
               {'status' in error &&
               typeof error.data === 'object' &&
               (error.data as ErrorResponse).error

@@ -19,6 +19,7 @@ import { useLogoutUserMutation } from '@/redux/services/authService';
 import { resetState } from '@/redux/slices/reducer';
 import {
   useGetUserQuery,
+  useUpdateLastOnlineMutation,
   useUpdateUserProfileImageMutation,
 } from '@/redux/services/userService';
 import { useUploadImageMutation } from '@/redux/services/cloudinaryService';
@@ -85,6 +86,8 @@ const SettingsList = () => {
     dispatch(setAlertDeleteDialogOpen(true));
   };
 
+  const [updateLastOnline] = useUpdateLastOnlineMutation();
+
   const { toast } = useToast();
   const navigate = useNavigate();
 
@@ -98,6 +101,9 @@ const SettingsList = () => {
         duration: 2000,
         title: 'Successfully logged out.',
       });
+      await updateLastOnline(data?.id).unwrap();
+      localStorage.removeItem('sessionId');
+      localStorage.removeItem('vite-ui-theme');
       dispatch(resetState());
       navigate('/auth');
     } catch (err) {
@@ -111,9 +117,9 @@ const SettingsList = () => {
   };
 
   return (
-    <div className="flex flex-col items-center py-6 px-4 sm:p-4 cursor-default relative">
+    <div className="flex flex-col items-center py-6 px-4 sm:p-4 cursor-default relative text-foreground">
       <span
-        className="absolute top-6 right-6 sm:top-4 sm:right-4 text-blue-500 text-xs cursor-pointer"
+        className="absolute top-6 right-6 sm:top-4 sm:right-4 text-primary text-xs cursor-pointer"
         onClick={handleCancel}
       >
         Done
@@ -121,7 +127,7 @@ const SettingsList = () => {
       <div className="flex flex-col">
         <p className="font-semibold text-sm">Settings</p>
       </div>
-      <div className="relative mt-2">
+      <div className="relative mt-6">
         <Avatar className="w-11 h-11">
           <AvatarImage src={data?.profileImageUrl} />
           <AvatarFallback className="bg-blue-200">
@@ -137,13 +143,13 @@ const SettingsList = () => {
         />
         <label
           htmlFor="avatarInput"
-          className="absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-gray-100 border-[1px] border-gray-100 cursor-pointer"
+          className="absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-secondary border cursor-pointer"
         >
           <PlusCircle />
         </label>
       </div>
       <p className="text-sm font-semibold mt-2">{data.username}</p>
-      <div className="flex flex-col w-full px-2 mt-6 bg-white rounded-lg divide-y divide-gray-100">
+      <div className="flex flex-col w-full px-2 mt-6 bg-background text-foreground rounded-lg divide-y dark:divide-slate-800 divide-slate-200">
         <div
           className="flex justify-between items-center w-full  text-sm sm:py-2 py-3 cursor-pointer "
           onClick={() => handleChangeCurrentScreen('darkModeSelection')}
@@ -156,10 +162,10 @@ const SettingsList = () => {
           </div>
 
           <div className="flex items-center gap-2">
-            <span className="text-xs text-gray-600">
+            <span className="text-xs dark:text-slate-200 text-gray-500">
               {data?.darkMode ? 'On' : 'Off'}
             </span>
-            <div className="h-3 w-3 text-gray-600">
+            <div className="h-3 w-3">
               <ChevronRight />
             </div>
           </div>
@@ -176,10 +182,10 @@ const SettingsList = () => {
           </div>
 
           <div className="flex items-center gap-2">
-            <span className="text-xs text-gray-600">
+            <span className="text-xs dark:text-slate-200 text-gray-500">
               {data?.notifications ? 'On' : 'Off'}
             </span>
-            <div className="h-3 w-3 text-gray-600">
+            <div className="h-3 w-3">
               <ChevronRight />
             </div>
           </div>
@@ -200,7 +206,7 @@ const SettingsList = () => {
           onClick={handleOpenAlertDialog}
         >
           <div className="flex items-center gap-2">
-            <div className="h-5 w-5 p-1 flex items-center justify-center rounded-full bg-red-500 text-white">
+            <div className="h-5 w-5 p-1 flex items-center justify-center rounded-full bg-destructive text-white">
               <Warn />
             </div>
             <span className="text-xs text-red-700">Delete account</span>

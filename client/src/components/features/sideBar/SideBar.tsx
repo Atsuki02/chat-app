@@ -67,12 +67,12 @@ const SideBar = () => {
                     <AvatarImage src="https://github.com/shadcn.png" />
                     <AvatarFallback>CN</AvatarFallback>
                   </Avatar>
-                  <span className="font-medium  text-sm dark:text-white truncate max-w-32 break-words">
+                  <span className="font-medium  text-sm text-foreground  truncate max-w-32 break-words">
                     {data?.username}
                   </span>
                 </div>
                 <div
-                  className="h-6 w-6 text-primary dark:text-primary"
+                  className="h-6 w-6 text-foreground "
                   onClick={() => dispatch(setSettingsOpen(true))}
                 >
                   <Settings />
@@ -80,7 +80,7 @@ const SideBar = () => {
               </div>
               <div className="flex flex-col px-2.5 gap-1.5">
                 <div
-                  className={`flex justify-start items-center gap-3 p-1.5 rounded-lg hover:bg-gray-200 ${currentList === 'chats' ? 'bg-gray-200' : 'bg-white'}`}
+                  className={`flex justify-start items-center gap-3 p-1.5 rounded-lg  text-foreground   hover:bg-secondary  ${currentList === 'chats' ? 'bg-secondary' : ''}`}
                   onClick={handleChangeListToChat}
                 >
                   <div className="h-7 w-7 border-1 p-1.5 rounded-lg bg-gray-200">
@@ -89,7 +89,7 @@ const SideBar = () => {
                   <p>Chats</p>
                 </div>
                 <div
-                  className={`flex justify-start items-center gap-3 p-1.5 rounded-lg hover:bg-gray-200 ${currentList === 'friends' ? 'bg-gray-200' : 'bg-white'}`}
+                  className={`flex justify-start items-center gap-3 p-1.5 rounded-lg  text-foreground   hover:bg-secondary ${currentList === 'friends' ? 'bg-secondary' : ''}`}
                   onClick={handleChangeListToFriends}
                 >
                   <div className="h-7 w-7 border-1 p-1.5 rounded-lg bg-gray-200">

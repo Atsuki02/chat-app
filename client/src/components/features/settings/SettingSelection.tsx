@@ -70,13 +70,13 @@ const SettingSelection = ({ type }: { type: string }) => {
   return (
     <div className="flex flex-col items-center py-6 px-4 sm:p-4  relative">
       <div
-        className="absolute w-5 h-5 top-6 left-6 sm:top-4 sm:left-4 text-blue-500 text-xs"
+        className="absolute w-5 h-5 top-6 left-6 sm:top-4 sm:left-4 text-primary text-xs"
         onClick={handleChangeCurrentScreen}
       >
         <ChevronLeft />
       </div>
       <span
-        className="absolute top-6 right-6 sm:top-4 sm:right-4 text-blue-500 text-xs"
+        className="absolute top-6 right-6 sm:top-4 sm:right-4 text-primary text-xs"
         onClick={handleCancel}
       >
         Done
@@ -87,16 +87,7 @@ const SettingSelection = ({ type }: { type: string }) => {
         </p>
       </div>
 
-      <div className="flex flex-col w-full px-3 mt-6 bg-white rounded-lg divide-y divide-gray-100">
-        <SelectionOption
-          onClick={() => handleToggleToOff(type)}
-          label="Off"
-          isChecked={
-            type === 'darkModeSelection'
-              ? data?.darkMode === false
-              : data?.notifications === false
-          }
-        />
+      <div className="flex flex-col w-full px-4 mt-6 bg-background text-foreground rounded-lg divide-y dark:divide-slate-800 divide-slate-200">
         <SelectionOption
           onClick={() => handleToggleToOn(type)}
           label="On"
@@ -104,6 +95,15 @@ const SettingSelection = ({ type }: { type: string }) => {
             type === 'darkModeSelection'
               ? data?.darkMode === true
               : data?.notifications === true
+          }
+        />
+        <SelectionOption
+          onClick={() => handleToggleToOff(type)}
+          label="Off"
+          isChecked={
+            type === 'darkModeSelection'
+              ? data?.darkMode === false
+              : data?.notifications === false
           }
         />
       </div>

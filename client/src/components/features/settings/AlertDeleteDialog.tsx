@@ -70,14 +70,19 @@ const AlertDeleteDialog = () => {
     >
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+          <AlertDialogTitle className="text-foreground">
+            Are you absolutely sure?
+          </AlertDialogTitle>
           <AlertDialogDescription>
             This action cannot be undone. This will permanently delete your
             account and remove your data from our servers.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel onClick={handleOpenChange}>
+          <AlertDialogCancel
+            className="text-foreground"
+            onClick={handleOpenChange}
+          >
             Cancel
           </AlertDialogCancel>
           <AlertDialogAction onClick={handleDelete} disabled={isLoading}>

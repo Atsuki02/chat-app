@@ -15,7 +15,7 @@ const RootLayout = () => {
 
   useEffect(() => {
     if (isSuccess && userData) {
-      const themePreference = userData.darkMode ? 'dark' : 'light';
+      const themePreference = userData.darkMode ? 'dark' : 'light' || 'dark';
       setTheme(themePreference);
       localStorage.setItem('vite-ui-theme', themePreference);
     }

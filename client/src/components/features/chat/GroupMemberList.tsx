@@ -29,7 +29,7 @@ const GroupMemberList = ({
   return (
     <>
       {isFetchingChatRoom ? null : (
-        <div className="min-h-12 w-full bg-white flex justify-between items-center px-8">
+        <div className="min-h-12 w-full bg-secondary flex justify-between items-center px-8">
           <div className="flex gap-3 items-center">
             {chatRoom?.chatRoomMembership.map((member, index) => (
               <div
@@ -38,7 +38,7 @@ const GroupMemberList = ({
                 onClick={() => handleClick(member.user.id)}
               >
                 <Avatar
-                  className={`w-7 h-7 ${member.user.id !== user?.id ? 'cursor-pointer' : ''}`}
+                  className={`w-7 h-7 border ${member.user.id !== user?.id ? 'cursor-pointer' : ''}`}
                 >
                   <AvatarImage src={member?.user?.profileImageUrl} />
                   <AvatarFallback>

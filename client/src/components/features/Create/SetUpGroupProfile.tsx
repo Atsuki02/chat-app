@@ -129,7 +129,7 @@ const SetUpGroupProfile = ({ friends }: { friends: Friend[] }) => {
   return (
     <div className="flex flex-col py-6 px-4 sm:p-4 w-full relative cursor-default">
       <span
-        className="absolute top-6 left-6 sm:top-4 sm:left-4 h-5 w-5 text-blue-500 text-xs cursor-pointer"
+        className="absolute top-6 left-6 sm:top-4 sm:left-4 h-5 w-5 text-primary text-xs cursor-pointer"
         onClick={handleChangeScreen}
       >
         <ChevronLeft />
@@ -138,7 +138,7 @@ const SetUpGroupProfile = ({ friends }: { friends: Friend[] }) => {
         <p className="font-semibold text-sm">Set up group profile</p>
       </div>
       <span
-        className="absolute top-6 right-6 sm:top-4 sm:right-4 text-blue-500 text-xs cursor-pointer"
+        className="absolute top-6 right-6 sm:top-4 sm:right-4 text-primary text-xs cursor-pointer"
         onClick={handleCreate}
       >
         Create
@@ -159,34 +159,36 @@ const SetUpGroupProfile = ({ friends }: { friends: Friend[] }) => {
           />
           <label
             htmlFor="avatarInput"
-            className="absolute bottom-0 right-0 mb-[-4px] mr-[-4px] w-5 h-5 rounded-full bg-gray-100 border-[1px] border-gray-100 cursor-pointer flex justify-center items-center"
+            className="absolute bottom-0 right-0 mb-[-4px] mr-[-4px] w-5 h-5 rounded-full bg-secondary text-secondary-foreground border cursor-pointer flex justify-center items-center"
           >
             <PlusCircle />
           </label>
         </div>
         <div className="w-[300px] relative">
           <Input
-            className="border-0 max-w-56 focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-ring focus-visible:ring-offset-0 caret-blue-400 "
+            className="border-0 max-w-56 focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-ring focus-visible:ring-offset-0 "
             value={groupNameInput}
             onChange={handleGroupNameInputChange}
             placeholder="Group name"
           />
           {error && (
-            <div className="pl-3 text-left text-red-500 text-xxs">{error}</div>
+            <div className="pl-3 text-left text-destructive text-xxs">
+              {error}
+            </div>
           )}
           {groupNameInput.length >= 1 && (
             <div
-              className="absolute top-2 right-1 h-6 w-6 text-white cursor-pointer"
+              className="absolute top-2 right-1 h-6 w-6 text-white cursor-pointer "
               onClick={() => dispatch(setGroupNameInput(''))}
             >
-              <Close fill="rgb(203 213 225)" />
+              <Close fill="gray" />
             </div>
           )}
         </div>
       </div>
 
       <div className="flex text-left">
-        <span className="font-semibold pb-6 sm:pb-2 text-slate-800 text-xs">
+        <span className="font-semibold pb-6 sm:pb-2  text-xs">
           Members: {selectedMembers.length + 1}
         </span>
       </div>
@@ -237,7 +239,7 @@ const SetUpGroupProfile = ({ friends }: { friends: Friend[] }) => {
                       </AvatarFallback>
                     </Avatar>
                     <div
-                      className="absolute -top-1 -right-1 w-5 h-5 sm:w-4 sm:h-4 rounded-full p-1 bg-slate-50 cursor-pointer"
+                      className="absolute -top-1 -right-1 w-5 h-5 sm:w-4 sm:h-4 rounded-full p-1 bg-background border text-foreground cursor-pointer"
                       onClick={() => dispatch(removeSelectedMember(friend.id))}
                     >
                       <Cancel />

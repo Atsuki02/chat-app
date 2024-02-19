@@ -60,13 +60,13 @@ const ChatBody = ({
   return (
     <>
       {isFetchingChatRoom ? null : (
-        <div className="w-full p-4 bg-blue-50  ">
+        <div className="w-full p-4 bg-background text-foreground ">
           {messages?.map((message, i) => (
             <div
               key={i}
-              className={`flex my-2  break-words   w-auto  ${
+              className={`flex my-2  break-words  w-auto  ${
                 message?.userId === user?.id
-                  ? ' ml-auto justify-end text-white'
+                  ? ' ml-auto justify-end text-foreground'
                   : 'mr-auto justify-start'
               }`}
             >
@@ -78,7 +78,9 @@ const ChatBody = ({
                   </AvatarFallback>
                 </Avatar>
               )}
-              <div className="text-xxs flex items-end text-slate-500 pr-4 whitespace-nowrap">
+              <div
+                className={`text-xxs flex items-end text-slate-500 pr-4 whitespace-nowrap ${message?.userId !== user?.id ? 'order-1 pl-4' : ''}`}
+              >
                 {new Date(message?.createdAt).toLocaleTimeString([], {
                   hour: '2-digit',
                   minute: '2-digit',
@@ -88,8 +90,8 @@ const ChatBody = ({
               <span
                 className={`py-1.5 px-2 sm:max-w-xs max-w-56  break-words  rounded-lg ${
                   message?.userId === user?.id
-                    ? 'bg-blue-500 text-white'
-                    : 'bg-white'
+                    ? 'bg-primary text-secondary'
+                    : 'bg-secondary text-foreground'
                 }`}
               >
                 {message?.content}

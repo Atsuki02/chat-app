@@ -3,7 +3,7 @@ export type Friend = {
   name: string;
   profileImageUrl: string;
   isOnline: boolean;
-  lastOnlineAt: boolean;
+  lastOnlineAt: Date | undefined;
   updatedAt: Date;
   username: string;
 };

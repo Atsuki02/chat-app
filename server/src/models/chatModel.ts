@@ -1,28 +1,23 @@
-import prisma from "../prisma/PrismaClient";
+import prisma from '../prisma/PrismaClient';
 
 async function findChatRoomById(chatRoomId: string) {
-    return prisma.chatRoom.findUnique({
-      where: {
-        id: chatRoomId,
+  return prisma.chatRoom.findUnique({
+    where: {
+      id: chatRoomId,
+    },
+    include: {
+      messages: {
+        include: {
+          user: {
+            select: {
+              id: true,
+              username: true,
+            },
+          },
+        },
       },
-      include: {
-        messages: {
-            include: {
-                user: {
-                    select: {
-                      id: true, 
-                      username: true, 
-                    }
-                  }
-            }
-          }, 
-      },
-    });
+    },
+  });
 }
 
-
-
-
-
-
-module.exports = { findChatRoomById }
+module.exports = { findChatRoomById };

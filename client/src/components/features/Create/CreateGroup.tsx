@@ -48,7 +48,7 @@ const CreateGroup = ({ friends }: { friends: Friend[] }) => {
   return (
     <div className="flex flex-col py-6 px-4 sm:p-4 w-full relative cursor-default">
       <span
-        className="absolute top-6 left-6 sm:top-4 sm:left-4 text-blue-500 text-xs cursor-pointer"
+        className="absolute top-6 left-6 sm:top-4 sm:left-4 text-primary text-xs cursor-pointer"
         onClick={handleCancel}
       >
         Cancel
@@ -61,7 +61,7 @@ const CreateGroup = ({ friends }: { friends: Friend[] }) => {
         </p>
       </div>
       <span
-        className="absolute top-6 right-6 sm:top-4 sm:right-4 text-blue-500 text-xs cursor-pointer"
+        className="absolute top-6 right-6 sm:top-4 sm:right-4 text-primary text-xs cursor-pointer"
         onClick={handleNext}
       >
         Next
@@ -73,7 +73,7 @@ const CreateGroup = ({ friends }: { friends: Friend[] }) => {
         <Input
           type="text"
           placeholder="Search by name"
-          className=" pl-8 sm:pl-7 bg-blue-50 focus-visible:ring-blue-400 rounded-md sm:rounded-lg h-8 sm:h-6 text-xs"
+          className=" pl-8 sm:pl-7 text-foreground bg-secondary focus-visible:ring rounded-md sm:rounded-lg h-8 sm:h-6 text-xs"
         />
       </div>
       <ul className="list-none w-full flex mb-6 sm:mb-4 gap-1 overflow-y-auto hide-scrollbar  ">
@@ -92,13 +92,13 @@ const CreateGroup = ({ friends }: { friends: Friend[] }) => {
                     <AvatarFallback>CN</AvatarFallback>
                   </Avatar>
                   <div
-                    className="absolute -top-1 -right-1 w-5 h-5 sm:w-4 sm:h-4 rounded-full p-1 bg-slate-50 cursor-pointer"
+                    className="absolute -top-1 -right-1 w-5 h-5 sm:w-4 sm:h-4 rounded-full p-1 bg-background border text-foreground cursor-pointer"
                     onClick={() => dispatch(removeSelectedMember(friend.id))}
                   >
                     <Cancel />
                   </div>
                 </div>
-                <p className=" font-extralight text-slate-600 text-xxs max-w-5 truncate">
+                <p className=" font-extralight dark:text-slate-400 text-slate-600 text-xxs max-w-5 truncate">
                   {friend?.username}
                 </p>
               </div>
@@ -106,7 +106,7 @@ const CreateGroup = ({ friends }: { friends: Friend[] }) => {
           ))}
       </ul>
       <div className="flex text-left">
-        <span className="font-semibold pb-6 sm:pb-2 text-slate-800 text-xs">
+        <span className="font-semibold pb-6 sm:pb-2 text-foreground text-xs">
           Friends
         </span>
       </div>
@@ -141,9 +141,9 @@ const CreateGroup = ({ friends }: { friends: Friend[] }) => {
                 </div>
               </div>
               <div
-                className={`p-1 w-8 h-8 sm:w-5 sm:h-5 flex items-center border-[1px] rounded-full ${selectedMembers.includes(friend.id) ? 'bg-blue-400' : ''}`}
+                className={`p-1 w-8 h-8 sm:w-5 sm:h-5 flex items-center  border rounded-full ${selectedMembers.includes(friend.id) ? 'bg-primary' : ''}`}
               >
-                <div className="text-white">
+                <div className="dark:text-foreground text-white">
                   {selectedMembers.includes(friend.id) && <Check />}
                 </div>
               </div>

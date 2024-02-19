@@ -41,17 +41,17 @@ const FriendsList = () => {
       {isFetchingFriends || isFetchingFavoriteFriends ? (
         <Loading />
       ) : (
-        <div className="p-4 bg-white h-screen flex flex-col gap-2 overflow-auto hide-scrollbar">
+        <div className="p-4 bg-secondary text-foreground h-screen flex flex-col gap-2 overflow-auto hide-scrollbar">
           <div className="flex justify-between items-center mb-4">
             <div
-              className="text-blue-500 h-6 w-6 cursor-pointer"
+              className=" h-6 w-6 cursor-pointer"
               onClick={() => dispatch(setSideBarDrawerOpen(true))}
             >
               <Hamburger />
             </div>
-            <h2 className="text-lg font-semibold  text-slate-800">Friends</h2>
+            <h2 className="text-lg font-semibold  ">Friends</h2>
             <div
-              className="text-blue-500 h-5 w-5 cursor-pointer"
+              className=" h-5 w-5 cursor-pointer"
               onClick={() => dispatch(setCreateDrawerOpen(true))}
             >
               <Pencil />
@@ -64,11 +64,11 @@ const FriendsList = () => {
             <Input
               type="text"
               placeholder="Search..."
-              className="pl-9 bg-blue-50 focus-visible:ring-blue-400 rounded-lg h-8"
+              className="pl-9  text-foreground  focus-visible:ring-primary dark:focus-visible:ring-primary  rounded-lg h-8"
             />
           </div>
 
-          <span className="font-semibold pb-2 text-slate-800">Favorites</span>
+          <span className="font-semibold pb-2 ">Favorites</span>
           <ul className="list-none m-0 pb-2">
             {favoriteFriends?.map((friend: Friend) => (
               <li
@@ -78,7 +78,7 @@ const FriendsList = () => {
               >
                 <div className="flex gap-3 items-center">
                   <div className="relative">
-                    <Avatar className="w-9 h-9 cursor-pointer">
+                    <Avatar className="w-9 h-9 cursor-pointer border">
                       <AvatarImage src={friend?.profileImageUrl} />
                       <AvatarFallback>
                         {friend?.username.substring(0, 2).toUpperCase()}
@@ -96,7 +96,7 @@ const FriendsList = () => {
               </li>
             ))}
           </ul>
-          <span className="font-semibold pb-2 text-slate-800">All friends</span>
+          <span className="font-semibold pb-2 ">All friends</span>
           <ul className="list-none m-0 pb-2">
             {friends
               ?.filter((friend: { id: string }) => friend.id !== user?.id)
@@ -108,7 +108,7 @@ const FriendsList = () => {
                 >
                   <div className="flex gap-3 items-center">
                     <div className="relative">
-                      <Avatar className="w-9 h-9 cursor-pointer">
+                      <Avatar className="w-9 h-9 cursor-pointer border">
                         <AvatarImage src={friend?.profileImageUrl} />
                         <AvatarFallback>
                           {friend?.username.substring(0, 2).toUpperCase()}

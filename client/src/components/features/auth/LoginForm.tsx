@@ -18,6 +18,7 @@ import { useToast } from '@/components/ui/use-toast';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '@/redux/store';
 import { setUser } from '@/redux/slices/authSlice';
+import { useUpdateUserOnlineStatusMutation } from '@/redux/services/userService';
 interface ErrorResponse {
   error: string;
 }
@@ -39,11 +40,12 @@ const LoginForm = () => {
   const navigate = useNavigate();
   const dispatch: AppDispatch = useDispatch();
   const [loginUser, { isLoading, isError, error }] = useLoginUserMutation();
+  const [updateUserOnlineStatus] = useUpdateUserOnlineStatusMutation();
 
   const onSubmit = async (data: z.infer<typeof loginSchema>) => {
     try {
       const response = await loginUser(data).unwrap();
-      console.log(response);
+      await updateUserOnlineStatus(response.id);
       dispatch(setUser(response.user));
       console.log('Registration successful:', response);
       if (response.sessionId) {
@@ -65,7 +67,7 @@ const LoginForm = () => {
   };
 
   return (
-    <div className="flex justify-center items-center w-full p-6 text-sm border-2 border-gray-100 rounded-md">
+    <div className="flex justify-center items-center w-full p-6 text-sm border rounded-md">
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
@@ -98,7 +100,7 @@ const LoginForm = () => {
             )}
           />
           {isError && error && (
-            <div className="text-red-500">
+            <div className="text-destructive">
               {'status' in error &&
               typeof error.data === 'object' &&
               (error.data as ErrorResponse).error

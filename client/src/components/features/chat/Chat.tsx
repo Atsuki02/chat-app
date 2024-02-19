@@ -41,9 +41,9 @@ const Chat = () => {
       {isFetchingChatRoom ? (
         <Loading />
       ) : (
-        <div className="sm:border-l-[1px] h-screen flex flex-col justify-center justify-items-stretch">
+        <div className=" h-screen flex flex-col justify-center justify-items-stretch bg-background text-foreground">
           {isSearchDrawerOpen ? (
-            <div className="h-14 w-full bg-white flex justify-between items-center">
+            <div className="h-14 w-full flex justify-between items-center">
               <div className="w-full pr-2 cursor-pointer">
                 <ChatSearchInput />
               </div>
@@ -60,7 +60,7 @@ const Chat = () => {
               isFetchingChatRoom={isFetchingChatRoom}
             />
           )}
-          <div className="flex-grow overflow-auto bg-blue-50 ">
+          <div className="flex-grow overflow-auto ">
             <ChatBody
               chatRoom={chatRoom}
               isFetchingChatRoom={isFetchingChatRoom}

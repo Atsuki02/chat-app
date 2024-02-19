@@ -4,7 +4,7 @@ const Favorite = ({ fill = 'none', stroke = 'currentColor' }) => {
       xmlns="http://www.w3.org/2000/svg"
       fill={fill}
       viewBox="0 0 24 24"
-      strokeWidth={1.5}
+      strokeWidth={0.5}
       stroke={stroke}
       className="w-full h-full"
     >

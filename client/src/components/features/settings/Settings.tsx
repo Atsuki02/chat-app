@@ -43,7 +43,7 @@ const Settings = () => {
       }
     >
       <DrawerContent
-        className="flex bg-gray-100 font-main inset-x-0 top-auto sm:inset-0 m-auto w-full h-[500px] sm:min-w-96 sm:w-[300px] sm:h-[350px] rounded-tl-lg rounded-tr-lg sm:rounded-lg after:hidden"
+        className="flex bg-secondary text-foreground font-main inset-x-0 top-auto sm:inset-0 m-auto w-full h-[500px] sm:min-w-96 sm:w-[300px] sm:h-[350px] rounded-tl-lg rounded-tr-lg sm:rounded-lg after:hidden"
         onClick={handleOpenChange}
       >
         {renderContent()}

@@ -39,7 +39,7 @@ const Create = () => {
     >
       <DrawerContent
         onClick={handleOpenChange}
-        className="flex   bg-white font-main inset-x-0 top-auto sm:inset-0 m-auto w-full h-[600px] sm:min-w-96 sm:w-[300px] sm:h-[350px] rounded-tl-lg  rounded-tr-lg sm:rounded-lg after:hidden"
+        className="flex  bg-background text-foreground font-main inset-x-0 top-auto sm:inset-0 m-auto w-full h-[600px] sm:min-w-96 sm:w-[300px] sm:h-[350px] rounded-tl-lg  rounded-tr-lg sm:rounded-lg after:hidden"
       >
         {currentScreen === 'selectMembers' ? (
           isFetchingFriends ? (

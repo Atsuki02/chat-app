@@ -1,180 +1,207 @@
-
-
 import { User } from '@prisma/client';
 import { Request, Response } from 'express';
-const { findUserById, toggleDarkMode, toggleNotifications, updateUserProfileImage, findAllUsers, findFavoriteUsers, addFavorite, removeFavorite, findUserChatRooms, findPinnedChatRoomsByUser, findChatRoomByIdAndUserId, createDirectMessageChatRoom, createChatRoomWithMembers, createMessage, pinChatRoom, unPinChatRoom, leaveChatRoom } = require('../models/userModel')
+const {
+  findUserById,
+  toggleDarkMode,
+  toggleNotifications,
+  updateUserProfileImage,
+  findAllUsers,
+  findFavoriteUsers,
+  addFavorite,
+  removeFavorite,
+  findUserChatRooms,
+  findPinnedChatRoomsByUser,
+  findChatRoomByIdAndUserId,
+  createDirectMessageChatRoom,
+  createChatRoomWithMembers,
+  createMessage,
+  pinChatRoom,
+  unPinChatRoom,
+  leaveChatRoom,
+  updateUserOnlineStatus,
+  updateLastOnline,
+} = require('../models/userModel');
 
 exports.getUser = async (req: Request, res: Response) => {
-    const userId = req.params.userId;
-    try {
-        const user = await findUserById(userId);
-        if (user) {
-            res.json(user);
-          } else {
-            res.status(404).send({ error: 'User not found' });
-          }
-        } catch (error) {
-          console.error('Error fetching user:', error);
-          res.status(500).send({ error: 'Internal server error' });
+  const userId = req.params.userId;
+  try {
+    const user = await findUserById(userId);
+    if (user) {
+      res.json(user);
+    } else {
+      res.status(404).send({ error: 'User not found' });
     }
+  } catch (error) {
+    console.error('Error fetching user:', error);
+    res.status(500).send({ error: 'Internal server error' });
+  }
 };
 
-
 exports.toggleDarkMode = async (req: Request, res: Response) => {
-    const userId = req.params.userId;
-    const { darkMode } = req.body;
-  
-    try {
-      const updatedUser = await toggleDarkMode(userId, darkMode);
-      res.json({ message: 'Dark mode updated successfully', updatedUser });
-    } catch (error) {
-      console.error('Error updating dark mode:', error);
-      res.status(500).send({ error: 'Internal server error' });
-    }
+  const userId = req.params.userId;
+  const { darkMode } = req.body;
+
+  try {
+    const updatedUser = await toggleDarkMode(userId, darkMode);
+    res.json({ message: 'Dark mode updated successfully', updatedUser });
+  } catch (error) {
+    console.error('Error updating dark mode:', error);
+    res.status(500).send({ error: 'Internal server error' });
+  }
 };
 
 exports.toggleNotifications = async (req: Request, res: Response) => {
-    const userId = req.params.userId;
-    const { notifications } = req.body;
-  
-    try {
-      const updatedUser = await toggleNotifications(userId, notifications);
-      res.json({ message: 'Notifications updated successfully', updatedUser });
-    } catch (error) {
-      console.error('Error updating Notifications:', error);
-      res.status(500).send({ error: 'Internal server error' });
-    }
+  const userId = req.params.userId;
+  const { notifications } = req.body;
+
+  try {
+    const updatedUser = await toggleNotifications(userId, notifications);
+    res.json({ message: 'Notifications updated successfully', updatedUser });
+  } catch (error) {
+    console.error('Error updating Notifications:', error);
+    res.status(500).send({ error: 'Internal server error' });
+  }
 };
 
 exports.updateProfileImage = async (req: Request, res: Response) => {
-    const userId = req.params.userId;
-    const { imageUrl } = req.body; 
-  
-    try {
-      const updatedUser = await updateUserProfileImage(userId, imageUrl);
-      res.json({ message: 'Profile image updated successfully', updatedUser });
-    } catch (error) {
-      console.error('Error updating profile image:', error);
-      res.status(500).send({ error: 'Internal server error' });
-    }
+  const userId = req.params.userId;
+  const { imageUrl } = req.body;
+
+  try {
+    const updatedUser = await updateUserProfileImage(userId, imageUrl);
+    res.json({ message: 'Profile image updated successfully', updatedUser });
+  } catch (error) {
+    console.error('Error updating profile image:', error);
+    res.status(500).send({ error: 'Internal server error' });
+  }
 };
 
 exports.getAllUsers = async (req: Request, res: Response) => {
-    try {
-        const users = await findAllUsers();
-        res.json(users);
-    } catch (error) {
-        console.error('Error fetching all users:', error);
-        res.status(500).send({ error: 'Internal server error' });
-    }
+  try {
+    const users = await findAllUsers();
+    res.json(users);
+  } catch (error) {
+    console.error('Error fetching all users:', error);
+    res.status(500).send({ error: 'Internal server error' });
+  }
 };
 
 exports.getFavoriteUsers = async (req: Request, res: Response) => {
-    const userId = req.params.userId;
-    
-    try {
-        const favoriteUsers = await findFavoriteUsers(userId)
-        res.json(favoriteUsers.map((favorite: { favoriteUser: User }) => favorite.favoriteUser));
-    } catch (error) {
-        console.error("Failed to get favorite users:", error);
-        res.status(500).json({ error: "Internal server error" });
-    }
+  const userId = req.params.userId;
+
+  try {
+    const favoriteUsers = await findFavoriteUsers(userId);
+    res.json(
+      favoriteUsers.map(
+        (favorite: { favoriteUser: User }) => favorite.favoriteUser,
+      ),
+    );
+  } catch (error) {
+    console.error('Failed to get favorite users:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
 };
 
 exports.addFavorite = async (req: Request, res: Response) => {
-    const userId = req.params.userId;
-    const { favoriteUserId } = req.body;
-    try {
-      const favorite = await addFavorite(userId, favoriteUserId)
-      res.json(favorite);
-    } catch (error) {
-      console.error("Error adding favorite:", error);
-      res.status(500).json({ error: "Failed to add favorite user." });
-    }
+  const userId = req.params.userId;
+  const { favoriteUserId } = req.body;
+  try {
+    const favorite = await addFavorite(userId, favoriteUserId);
+    res.json(favorite);
+  } catch (error) {
+    console.error('Error adding favorite:', error);
+    res.status(500).json({ error: 'Failed to add favorite user.' });
+  }
 };
 
 exports.removeFavorite = async (req: Request, res: Response) => {
-    const userId = req.params.userId;
-    const { favoriteUserId } = req.body;
-    try {
-      const favorite = await removeFavorite(userId, favoriteUserId)
-      res.json(favorite);
-    } catch (error) {
-      console.error("Error adding favorite:", error);
-      res.status(500).json({ error: "Failed to add favorite user." });
-    }
+  const userId = req.params.userId;
+  const { favoriteUserId } = req.body;
+  try {
+    const favorite = await removeFavorite(userId, favoriteUserId);
+    res.json(favorite);
+  } catch (error) {
+    console.error('Error adding favorite:', error);
+    res.status(500).json({ error: 'Failed to add favorite user.' });
+  }
 };
 
 exports.getUserChatRooms = async (req: Request, res: Response) => {
-    const userId = req.params.userId; 
-    try {
-        const memberships = await findUserChatRooms(userId);
-        const chatRooms = memberships.map((membership: any) => {
-            const isPinned = membership.chatRoom.pinnedByUsers.some((pinned: any) => pinned.userId === userId);
-            let partnerUserInfo = null;
-           
-            if (membership.chatRoom.isDirectMessage) {
-                const partnerMembership = membership.chatRoom.chatRoomMembership.find((m: any) => m.userId !== userId);
-                partnerUserInfo = partnerMembership ? partnerMembership.user : null;
-            }
-            return {
-                ...membership.chatRoom,
-                isPinned,
-                partnerUserInfo,
-            };
-        });
-        res.json(chatRooms);
-    } catch (error) {
-        console.error("Error fetching user's chat rooms:", error);
-        res.status(500).json({ error: "Failed to fetch user's chat rooms." });
-    }
+  const userId = req.params.userId;
+  try {
+    const memberships = await findUserChatRooms(userId);
+    const chatRooms = memberships.map((membership: any) => {
+      const isPinned = membership.chatRoom.pinnedByUsers.some(
+        (pinned: any) => pinned.userId === userId,
+      );
+      let partnerUserInfo = null;
+
+      if (membership.chatRoom.isDirectMessage) {
+        const partnerMembership = membership.chatRoom.chatRoomMembership.find(
+          (m: any) => m.userId !== userId,
+        );
+        partnerUserInfo = partnerMembership ? partnerMembership.user : null;
+      }
+      return {
+        ...membership.chatRoom,
+        isPinned,
+        partnerUserInfo,
+      };
+    });
+    res.json(chatRooms);
+  } catch (error) {
+    console.error("Error fetching user's chat rooms:", error);
+    res.status(500).json({ error: "Failed to fetch user's chat rooms." });
+  }
 };
 exports.getPinnedChatRoomsByUser = async (req: Request, res: Response) => {
-    const { userId } = req.params;
-    try {
-      const pinnedChatRooms = await findPinnedChatRoomsByUser(userId);
-      res.json(pinnedChatRooms);
-    } catch (error) {
-      console.error("Error fetching pinned chat rooms:", error);
-      res.status(500).json({ error: "Failed to fetch pinned chat rooms." });
-    }
+  const { userId } = req.params;
+  try {
+    const pinnedChatRooms = await findPinnedChatRoomsByUser(userId);
+    res.json(pinnedChatRooms);
+  } catch (error) {
+    console.error('Error fetching pinned chat rooms:', error);
+    res.status(500).json({ error: 'Failed to fetch pinned chat rooms.' });
+  }
 };
 
 exports.getChatRoomByIdAndUserId = async (req: Request, res: Response) => {
-    const { userId, chatRoomId } = req.params; 
-    try {
-        const chatRoom = await findChatRoomByIdAndUserId(userId, chatRoomId);
+  const { userId, chatRoomId } = req.params;
+  try {
+    const chatRoom = await findChatRoomByIdAndUserId(userId, chatRoomId);
 
-        if (!chatRoom) {
-            return res.status(404).json({ message: 'Chat room not found' });
-        }
-
-        let isPinned = false;
-        if (chatRoom?.pinnedByUsers.length > 0) {
-            isPinned = true;
-        }
-
-        res.json({
-          ...chatRoom,
-          isPinned: isPinned});
-    } catch (error) {
-        console.error('Failed to fetch chat room:', error);
-        res.status(500).json({ message: 'Failed to fetch chat room' });
+    if (!chatRoom) {
+      return res.status(404).json({ message: 'Chat room not found' });
     }
+
+    let isPinned = false;
+    if (chatRoom?.pinnedByUsers.length > 0) {
+      isPinned = true;
+    }
+
+    res.json({
+      ...chatRoom,
+      isPinned: isPinned,
+    });
+  } catch (error) {
+    console.error('Failed to fetch chat room:', error);
+    res.status(500).json({ message: 'Failed to fetch chat room' });
+  }
 };
 
-exports.createDirectMessageChatRoom = async (req: Request, res: Response)  => {
-    const { userId1, userId2 } = req.body;
-  
-    try {
-      const room = await createDirectMessageChatRoom(userId1, userId2);
-      res.json(room);
-    } catch (error) {
-      console.error('Error creating direct message chat room:', error);
-      res.status(500).json({ error: 'Failed to create direct message chat room.' });
-    }
-}
+exports.createDirectMessageChatRoom = async (req: Request, res: Response) => {
+  const { userId1, userId2 } = req.body;
 
+  try {
+    const room = await createDirectMessageChatRoom(userId1, userId2);
+    res.json(room);
+  } catch (error) {
+    console.error('Error creating direct message chat room:', error);
+    res
+      .status(500)
+      .json({ error: 'Failed to create direct message chat room.' });
+  }
+};
 
 exports.createChatRoomWithMembers = async (req: Request, res: Response) => {
   const { name, members, chatRoomImageUrl } = req.body;
@@ -184,7 +211,11 @@ exports.createChatRoomWithMembers = async (req: Request, res: Response) => {
   }
 
   try {
-    const room = await createChatRoomWithMembers(name, members, chatRoomImageUrl);
+    const room = await createChatRoomWithMembers(
+      name,
+      members,
+      chatRoomImageUrl,
+    );
     res.json(room);
   } catch (error) {
     console.error('Error creating chat room with members:', error);
@@ -196,37 +227,37 @@ exports.createMessage = async (req: Request, res: Response) => {
   const { content, userId, chatRoomId } = req.body;
 
   try {
-    const message = await createMessage(content, userId, chatRoomId)
+    const message = await createMessage(content, userId, chatRoomId);
     res.json(message);
   } catch (error) {
-    console.error("Failed to create message:", error);
-    res.status(500).json({ error: "Failed to create message." });
+    console.error('Failed to create message:', error);
+    res.status(500).json({ error: 'Failed to create message.' });
   }
 };
 
 exports.pinChatRoom = async (req: Request, res: Response) => {
   const { userId, chatRoomId } = req.body;
   try {
-    const pinnedChatRoom = await pinChatRoom(userId, chatRoomId)
+    const pinnedChatRoom = await pinChatRoom(userId, chatRoomId);
     res.json(pinnedChatRoom);
   } catch (error) {
     res.status(500).send({ error: 'Failed to pin the chat room.' });
   }
-}
+};
 
 exports.unPinChatRoom = async (req: Request, res: Response) => {
   const { userId, chatRoomId } = req.body;
 
   try {
-    const pinnedChatRoom = await unPinChatRoom(userId, chatRoomId)
+    const pinnedChatRoom = await unPinChatRoom(userId, chatRoomId);
     res.json(pinnedChatRoom);
   } catch (error) {
     res.status(500).send({ error: 'Failed to unpin the chat room.' });
   }
-}
+};
 
 exports.leaveChatRoom = async (req: Request, res: Response) => {
-  const userId = req.params.userId; 
+  const userId = req.params.userId;
   const chatRoomId = req.body.chatRoomId;
 
   try {
@@ -236,4 +267,30 @@ exports.leaveChatRoom = async (req: Request, res: Response) => {
     console.error('Failed to leave chat room:', error);
     res.status(500).json({ error: 'Failed to leave the chat room.' });
   }
-}
+};
+
+exports.updateUserOnlineStatus = async (req: Request, res: Response) => {
+  const userId = req.params.userId;
+
+  try {
+    await updateUserOnlineStatus(userId);
+
+    res.json({ message: 'User online status updated successfully.' });
+  } catch (error) {
+    console.error('Failed to update user online status:', error);
+    res.status(500).json({ error: 'Failed to update user online status.' });
+  }
+};
+
+exports.updateLastOnline = async (req: Request, res: Response) => {
+  const userId = req.params.userId;
+
+  try {
+    await updateLastOnline(userId);
+
+    res.json({ message: 'Last online time updated successfully.' });
+  } catch (error) {
+    console.error('Failed to update last online time:', error);
+    res.status(500).json({ error: 'Failed to update last online time.' });
+  }
+};

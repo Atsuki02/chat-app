@@ -10,12 +10,12 @@ const ChatSearchInput = () => {
   const { searchInput } = useSelector((state: RootState) => state.chat);
 
   return (
-    <div className="w-full flex items-center justify-center bg-white p-2 gap-2 relative">
+    <div className="w-full flex items-center justify-center dark:bg-background  p-2 gap-2 relative">
       <Input
         value={searchInput}
         onChange={(e) => dispatch(setSearchInput(e.target.value))}
         placeholder="Search in conversation"
-        className="w-full pr-10 bg-blue-50  focus-visible:ring-blue-400 resize-none border-none rounded-md overflow-auto "
+        className="w-full pr-10 text-foreground bg-secondary  focus-visible:ring-primary dark:focus-visible:ring-primary focus-visible:ring  resize-none border-none rounded-md overflow-auto "
       />
       {searchInput.length >= 1 && (
         <div

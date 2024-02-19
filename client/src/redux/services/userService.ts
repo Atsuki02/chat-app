@@ -159,6 +159,20 @@ export const userApi = createApi({
       }),
       invalidatesTags: ['ChatRoom'],
     }),
+    updateLastOnline: builder.mutation({
+      query: (userId) => ({
+        url: `/${userId}/last-online`,
+        method: 'PATCH',
+      }),
+      invalidatesTags: [{ type: 'User', id: 'LIST' }],
+    }),
+    updateUserOnlineStatus: builder.mutation({
+      query: (userId) => ({
+        url: `/${userId}/online-status`,
+        method: 'PATCH',
+        invalidatesTags: [{ type: 'User', id: 'LIST' }],
+      }),
+    }),
   }),
 });
 
@@ -180,4 +194,6 @@ export const {
   usePinChatRoomMutation,
   useUnPinChatRoomMutation,
   useLeaveChatRoomMutation,
+  useUpdateLastOnlineMutation,
+  useUpdateUserOnlineStatusMutation,
 } = userApi;

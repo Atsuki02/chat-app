@@ -1,7 +1,7 @@
 const { prisma } = require('../prisma/seed');
 const cron = require('node-cron');
 
-// Delete the expired session records from database at every 0:00 
+// Delete the expired session records from database at every 0:00
 
 module.exports = () => {
   cron.schedule('0 0 * * *', async () => {
