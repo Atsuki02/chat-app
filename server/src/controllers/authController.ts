@@ -29,6 +29,7 @@ exports.register = async (req: Request, res: Response) => {
       email,
       username,
       passwordHash: hashedPassword,
+      lastOnlineAt: new Date(), 
     });
 
     const session = await createSession(newUser.id);

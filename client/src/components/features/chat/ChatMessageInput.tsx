@@ -68,7 +68,7 @@ const ChatMessageInput = () => {
         value={messageInput}
         maxLength={1000}
         placeholder="Enter a message"
-        className="w-full hide-scrollbar bg-secondary focus-visible:ring dark:focus-visible:ring resize-none border-none rounded-md overflow-auto p-2"
+        className="w-full hide-scrollbar bg-secondary focus-visible:ring dark:focus-visible:ring resize-none border-none rounded-md overflow-auto p-2 pr-16"
         onChange={(e) => {
           adjustHeight();
           dispatch(setMessageInput(e.target.value));

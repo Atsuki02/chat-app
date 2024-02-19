@@ -116,7 +116,9 @@ const ChatsList = () => {
                           </AvatarFallback>
                         </Avatar>
                         {chatRoom.isDirectMessage && (
-                          <div className="absolute bottom-0.5 right-0.5 bg-green-400 w-2 h-2 rounded-full border"></div>
+                          <div
+                            className={`absolute bottom-0.5 right-0.5 w-2 h-2 rounded-full border ${chatRoom?.partnerUserInfo?.isOnline ? 'bg-green-400' : 'bg-gray-400'}`}
+                          ></div>
                         )}
                       </div>
                       <div className="flex justify-between max-w-32">
@@ -180,7 +182,9 @@ const ChatsList = () => {
                         </AvatarFallback>
                       </Avatar>
                       {chatRoom.isDirectMessage && (
-                        <div className="absolute bottom-0.5 right-0.5 bg-green-400 w-2 h-2 rounded-full border"></div>
+                        <div
+                          className={`absolute bottom-0.5 right-0.5 w-2 h-2 rounded-full border ${chatRoom?.partnerUserInfo?.isOnline ? 'bg-green-400' : 'bg-gray-400'}`}
+                        ></div>
                       )}
                     </div>
                     <div className="flex justify-between max-w-32">

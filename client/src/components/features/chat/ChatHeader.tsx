@@ -40,22 +40,27 @@ const ChatHeader = ({
     }
   };
 
-  const getLastSeenText = (lastOnlineAt: Date | string): string => {
-    const date = new Date(lastOnlineAt);
+  const getLastSeenText = (lastOnlineAt: Date | null | undefined): string => {
+    if (lastOnlineAt === null || lastOnlineAt === undefined) {
+      return '';
+    }
 
+    const lastOnlineDate = new Date(lastOnlineAt);
     const now = new Date();
-    const diffMs = now.getTime() - date.getTime();
-    const diffMins = Math.round(diffMs / 60000);
-    const diffHours = Math.round(diffMs / 3600000);
-    const diffDays = Math.round(diffMs / 86400000);
 
+    const diffMs = now.getTime() - lastOnlineDate.getTime();
+    const diffMins = Math.floor(diffMs / (1000 * 60));
     if (diffMins < 60) {
       return `Last seen ${diffMins} mins ago`;
-    } else if (diffHours < 24) {
-      return `Last seen ${diffHours} hours ago`;
-    } else {
-      return `Last seen ${diffDays} days ago`;
     }
+
+    const diffHours = Math.floor(diffMins / 60);
+    if (diffHours < 24) {
+      return `Last seen ${diffHours} hours ago`;
+    }
+
+    const diffDays = Math.floor(diffHours / 24);
+    return `Last seen ${diffDays} days ago`;
   };
 
   <p className="text-xs">
@@ -98,7 +103,9 @@ const ChatHeader = ({
                 </Avatar>
               )}
               {!chatRoom?.isDirectMessage ? null : (
-                <div className="absolute bottom-0.5 right-0.5 w-2 h-2 rounded-full border bg-green-400"></div>
+                <div
+                  className={`absolute bottom-0.5 right-0.5 w-2 h-2 rounded-full border ${chatRoom?.partnerUserInfo?.isOnline ? 'bg-green-400' : 'bg-gray-400'}`}
+                ></div>
               )}
             </div>
             <>
@@ -120,8 +127,7 @@ const ChatHeader = ({
                     {chatRoom?.partnerUserInfo?.username}
                   </p>
                   <p className="text-xs">
-                    {chatRoom?.partnerUserInfo?.isOnline ||
-                    !chatRoom?.partnerUserInfo?.lastOnlineAt
+                    {chatRoom?.partnerUserInfo?.isOnline
                       ? 'Online'
                       : getLastSeenText(
                           chatRoom?.partnerUserInfo?.lastOnlineAt,

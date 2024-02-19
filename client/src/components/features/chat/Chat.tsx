@@ -60,7 +60,7 @@ const Chat = () => {
               isFetchingChatRoom={isFetchingChatRoom}
             />
           )}
-          <div className="flex-grow overflow-auto ">
+          <div className="flex-grow overflow-auto  hide-scrollbar">
             <ChatBody
               chatRoom={chatRoom}
               isFetchingChatRoom={isFetchingChatRoom}

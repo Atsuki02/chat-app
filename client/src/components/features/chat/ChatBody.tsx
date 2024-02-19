@@ -42,7 +42,7 @@ const ChatBody = ({
     if (messagesEndRef.current) {
       messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
     }
-  }, [chatRoom.messages, selectedChatRoom]);
+  }, [chatRoom.messages, selectedChatRoom, messages]);
 
   useEffect(() => {
     const handleNewMessage = (newMessage: Message) => {
@@ -60,7 +60,7 @@ const ChatBody = ({
   return (
     <>
       {isFetchingChatRoom ? null : (
-        <div className="w-full p-4 bg-background text-foreground ">
+        <div className="w-full p-4 bg-background text-foreground">
           {messages?.map((message, i) => (
             <div
               key={i}

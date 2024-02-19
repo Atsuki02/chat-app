@@ -42,7 +42,7 @@ const GroupMemberList = ({
                 >
                   <AvatarImage src={member?.user?.profileImageUrl} />
                   <AvatarFallback>
-                    {chatRoom?.name?.substring(0, 2).toUpperCase()}
+                    {member?.user?.username?.substring(0, 2).toUpperCase()}
                   </AvatarFallback>
                 </Avatar>
               </div>
