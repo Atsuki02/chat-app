@@ -14,11 +14,14 @@ jobs:
         with:
           node-version: "20"
 
-      - name: Change directory
-        run: cd client
+      - name: Install Dependencies
+        run: npm ci
+        working-directory: client
 
       - name: Run Lint
         run: npm run lint
+        working-directory: client
 
       - name: Run Test
         run: npm run test
+        working-directory: client
